@@ -112,6 +112,7 @@ interface TitanStore extends AppState {
 
   // Invoices
   addInvoice: (invoice: Omit<Invoice, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  updateInvoice: (id: string,  Partial<Invoice>) => void;
 
   // Audit
   addAuditLog: (log: Omit<AuditLog, 'id' | 'timestamp'>) => void;
