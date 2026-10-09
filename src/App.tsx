@@ -9,6 +9,7 @@ import Budgets from './pages/Budgets';
 import SettingsPage from './pages/Settings';
 import Sources from './pages/Sources';
 import ComingSoon from './pages/ComingSoon';
+import Stage1Status from './pages/Stage1Status';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const currentSession = useStore(s => s.currentSession);
@@ -64,6 +65,7 @@ export default function App() {
           <Route path="/presupuestos" element={<Budgets />} />
           <Route path="/configuracion" element={<SettingsPage />} />
           <Route path="/fuentes" element={<Sources />} />
+          <Route path="/estado-etapa-1" element={<Stage1Status />} />
 
           {/* Coming soon modules */}
           <Route path="/empleado-digital" element={<ComingSoon />} />

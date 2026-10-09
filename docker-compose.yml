@@ -1,0 +1,100 @@
+# ============================================================
+# TITAN BUSINESS OS — Docker Compose
+# Etapa 1: Fundación
+# ============================================================
+
+version: '3.8'
+
+services:
+  # Frontend (React + Vite)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    networks:
+      - titan-network
+    restart: unless-stopped
+
+  # Backend (FastAPI) - Preparado para Etapa 2
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://titan:titan_secret@postgres:5432/titan_db
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET:-change_this_in_production}
+      - ENVIRONMENT=production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - titan-network
+    restart: unless-stopped
+
+  # PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=titan
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-titan_secret}
+      - POSTGRES_DB=titan_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U titan"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - titan-network
+    restart: unless-stopped
+
+  # Redis (Cache y colas)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - titan-network
+    restart: unless-stopped
+
+  # Adminer (Interface de base de datos - solo desarrollo)
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - titan-network
+    profiles:
+      - development
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  titan-network:
+    driver: bridge

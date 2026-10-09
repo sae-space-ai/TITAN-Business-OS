@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useStore } from '../store';
-import { Settings, Building2, Users, Receipt, Shield, Plus, Edit2 } from 'lucide-react';
+import { Settings, Building2, Users, Receipt, Shield, Plus, Edit2, FlaskConical } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Tariff } from '../types';
 
 export default function SettingsPage() {
+  const navigate = useNavigate();
   const session = useStore(s => s.currentSession);
   const getCurrentCompany = useStore(s => s.getCurrentCompany);
   const getCurrentUser = useStore(s => s.getCurrentUser);
@@ -58,11 +60,22 @@ export default function SettingsPage() {
     <div className="p-4 lg:p-8 max-w-6xl mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#334155] flex items-center gap-2">
-          <Settings size={24} className="text-gray-600" />
-          Configuración
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">Gestiona tu empresa, tarifas y auditoría</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-[#334155] flex items-center gap-2">
+              <Settings size={24} className="text-gray-600" />
+              Configuración
+            </h1>
+            <p className="text-sm text-gray-500 mt-1">Gestiona tu empresa, tarifas y auditoría</p>
+          </div>
+          <button
+            onClick={() => navigate('/estado-etapa-1')}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#EAF7FE] text-[#288FC5] text-sm font-medium hover:bg-[#288FC5]/10 border border-[#288FC5]/20"
+          >
+            <FlaskConical size={14} />
+            Estado Etapa 1
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
