@@ -1,98 +1,18 @@
 import { useState } from 'react';
 
-function App() {
-  const [activeSection, setActiveSection] = useState('overview');
-  const [answers, setAnswers] = useState<Record<number, string>>({});
-  const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
-
-  const questions = [
-    {
-      id: 1,
-      title: "¿Qué problemas específicos quieres resolver?",
-      description: "Define los casos de uso reales. Por ejemplo: automatizar atención al cliente, generar informes, monitorizar datos, gestionar contenido, etc.",
-      importance: "CRÍTICA",
-      icon: "🎯",
-      context: "Sin objetivos claros no se puede diseñar una arquitectura eficiente. Cada agente y herramienta debe responder a un problema concreto.",
-      examples: [
-        "Automatizar la generación de informes semanales a partir de datos dispersos",
-        "Monitorizar fuentes de información y generar alertas inteligentes",
-        "Gestionar y responder consultas de clientes de forma semi-autónoma",
-        "Procesar documentos y extraer información estructurada",
-        "Coordinar tareas entre múltiples herramientas y plataformas"
-      ]
-    },
-    {
-      id: 2,
-      title: "¿Quién usará el sistema y cómo interactuará con él?",
-      description: "Identifica los usuarios finales: solo tú, un equipo pequeño, clientes externos, o una combinación.",
-      importance: "CRÍTICA",
-      icon: "👥",
-      context: "El tipo de usuario determina la complejidad de la interfaz, los niveles de supervisión necesarios y el modelo de seguridad.",
-      examples: [
-        "Solo yo (uso personal para productividad)",
-        "Yo + 2-3 colaboradores con roles diferenciados",
-        "Equipo interno de una empresa (5-15 personas)",
-        "Clientes externos que interactúan con los agentes",
-        "Combinación: yo superviso, agentes ejecutan, clientes reciben resultados"
-      ]
-    },
-    {
-      id: 3,
-      title: "¿Qué herramientas y servicios externos necesitas integrar?",
-      description: "Enumera las plataformas, APIs y servicios con los que el sistema debe conectarse.",
-      importance: "ALTA",
-      icon: "🔗",
-      context: "Las integraciones definen la complejidad técnica, los costes variables y los requisitos de seguridad del sistema.",
-      examples: [
-        "APIs de IA: OpenAI, Anthropic, Google AI",
-        "Comunicación: Email, Slack, Telegram, WhatsApp",
-        "Almacenamiento: Google Drive, Notion, bases de datos",
-        "Desarrollo: GitHub, APIs de código, servicios cloud",
-        "Datos: Scraping web, APIs públicas, bases de datos externas"
-      ]
-    },
-    {
-      id: 4,
-      title: "¿Qué nivel de autonomía deben tener los agentes?",
-      description: "Define si los agentes actúan solo con tu aprobación, de forma semi-autónoma, o completamente autónomos.",
-      importance: "ALTA",
-      icon: "🤖",
-      context: "El nivel de autonomía afecta directamente a la arquitectura de seguridad, los costes (tokens consumidos) y los riesgos del sistema.",
-      examples: [
-        "Totalmente supervisado: yo apruebo cada acción",
-        "Semi-autónomo: ejecuta tareas rutinarias, pide aprobación para las críticas",
-        "Autónomo con límites: opera dentro de parámetros definidos, escala excepciones",
-        "Autónomo completo: solo reporta resultados (requiere madurez del sistema)",
-        "Mixto: diferentes niveles según el tipo de tarea o agente"
-      ]
-    },
-    {
-      id: 5,
-      title: "¿Cuál es tu horizonte temporal y prioridad inmediata?",
-      description: "Define qué necesitas que funcione primero y en qué plazo esperas tener un sistema operativo.",
-      importance: "ALTA",
-      icon: "⏱️",
-      context: "Determina el alcance del MVP, las tecnologías iniciales y qué componentes pueden esperar a fases posteriores.",
-      examples: [
-        "MVP en 1-2 semanas: un agente que resuelva UN problema concreto",
-        "Sistema básico en 1 mes: 2-3 agentes con integraciones esenciales",
-        "Plataforma completa en 2-3 meses: ecosistema modular con supervisión",
-        "Evolución progresiva: empezar mínimo y crecer según necesidades reales",
-        "Exploración: probar diferentes enfoques antes de comprometerse con una arquitectura"
-      ]
-    }
-  ];
-
-  const handleAnswerChange = (questionId: number, value: string) => {
-    setAnswers(prev => ({ ...prev, [questionId]: value }));
-  };
+export default function App() {
+  const [activeSection, setActiveSection] = useState('vision');
+  const [expandedModule, setExpandedModule] = useState<string | null>(null);
 
   const sections = [
-    { id: 'overview', label: 'Visión', icon: '📋' },
-    { id: 'questions', label: 'Preguntas', icon: '❓' },
+    { id: 'vision', label: 'Visión', icon: '🎯' },
     { id: 'architecture', label: 'Arquitectura', icon: '🏗️' },
-    { id: 'budget', label: 'Presupuesto', icon: '💰' },
-    { id: 'roadmap', label: 'Hoja de Ruta', icon: '🗺️' },
+    { id: 'modules', label: 'Módulos', icon: '📦' },
+    { id: 'data', label: 'Datos', icon: '💾' },
+    { id: 'flows', label: 'Flujos', icon: '🔄' },
+    { id: 'integrations', label: 'Integraciones', icon: '🔗' },
+    { id: 'security', label: 'Seguridad', icon: '🔒' },
+    { id: 'acceptance', label: 'Aceptación', icon: '✅' },
   ];
 
   return (
@@ -102,20 +22,20 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-xl">
-                🧠
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-xl font-bold">
+                T
               </div>
               <div>
-                <h1 className="text-lg font-bold text-white">Sistema de IA — Fase 0</h1>
-                <p className="text-xs text-gray-400">Visión, Estrategia y Arquitectura</p>
+                <h1 className="text-lg font-bold text-white">TITAN Business OS</h1>
+                <p className="text-xs text-gray-400">Queen Cover — Especificación de Construcción</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium">
-                ⏳ En progreso
+              <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-medium">
+                📋 Documento Maestro
               </span>
               <span className="px-3 py-1 rounded-full bg-gray-800 text-gray-400 text-xs">
-                Paso 0.1 de 0.7
+                v1.0
               </span>
             </div>
           </div>
@@ -132,7 +52,7 @@ function App() {
                 onClick={() => setActiveSection(section.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
                   activeSection === section.id
-                    ? 'bg-violet-500/10 text-violet-300 border border-violet-500/20'
+                    ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/20'
                     : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'
                 }`}
               >
@@ -146,19 +66,19 @@ function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeSection === 'overview' && <OverviewSection />}
-        {activeSection === 'questions' && (
-          <QuestionsSection
-            questions={questions}
-            answers={answers}
-            expandedQuestion={expandedQuestion}
-            setExpandedQuestion={setExpandedQuestion}
-            handleAnswerChange={handleAnswerChange}
+        {activeSection === 'vision' && <VisionSection />}
+        {activeSection === 'architecture' && <ArchitectureSection />}
+        {activeSection === 'modules' && (
+          <ModulesSection
+            expandedModule={expandedModule}
+            setExpandedModule={setExpandedModule}
           />
         )}
-        {activeSection === 'architecture' && <ArchitectureSection />}
-        {activeSection === 'budget' && <BudgetSection />}
-        {activeSection === 'roadmap' && <RoadmapSection />}
+        {activeSection === 'data' && <DataSection />}
+        {activeSection === 'flows' && <FlowsSection />}
+        {activeSection === 'integrations' && <IntegrationsSection />}
+        {activeSection === 'security' && <SecuritySection />}
+        {activeSection === 'acceptance' && <AcceptanceSection />}
       </main>
 
       {/* Footer */}
@@ -166,14 +86,14 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-500">
-              Fase 0 — No se avanza sin autorización explícita
+              Queen Cover — TITAN Business OS Specification
             </p>
             <div className="flex items-center gap-4 text-xs text-gray-500">
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                Diseño en progreso
-              </span>
-              <span>Presupuesto máx: $100/mes</span>
+              <span>Máxima inteligencia dentro</span>
+              <span className="text-gray-700">|</span>
+              <span>Máxima sencillez fuera</span>
+              <span className="text-gray-700">|</span>
+              <span>Mínimo coste</span>
             </div>
           </div>
         </div>
@@ -182,64 +102,83 @@ function App() {
   );
 }
 
-function OverviewSection() {
+function VisionSection() {
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 via-gray-900 to-violet-950 border border-gray-800 p-8 sm:p-12">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-500/10 via-transparent to-transparent"></div>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 via-gray-900 to-cyan-950 border border-gray-800 p-8 sm:p-12">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent"></div>
         <div className="relative">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-medium mb-4">
-            <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse"></span>
-            FASE 0 — DEFINICIÓN
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium mb-4">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+            SUPERPROMPT MAESTRO
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Ecosistema de Agentes de IA
+            TITAN Business OS
           </h2>
           <p className="text-lg text-gray-300 max-w-3xl mb-6">
-            Sistema modular, escalable, seguro y económicamente sostenible para automatizar tareas, 
-            conectar herramientas externas, procesar información y ejecutar procesos bajo supervisión humana.
+            Sistema operativo de negocio integrado para autónomos. 
+            Inteligencia artificial que trabaja para ti, no contra ti.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50">
-              <div className="text-2xl mb-2">🎯</div>
-              <h3 className="font-semibold text-white text-sm">Enfoque</h3>
-              <p className="text-xs text-gray-400 mt-1">Agentes de IA + Automatizaciones + Integraciones</p>
+          
+          {/* Core Philosophy */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50">
+              <div className="text-3xl mb-3">🧠</div>
+              <h3 className="font-semibold text-white text-sm mb-2">Máxima Inteligencia Dentro</h3>
+              <p className="text-xs text-gray-400">
+                IA avanzada, automatización completa, procesamiento inteligente de datos
+              </p>
             </div>
-            <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50">
-              <div className="text-2xl mb-2">💰</div>
-              <h3 className="font-semibold text-white text-sm">Presupuesto</h3>
-              <p className="text-xs text-gray-400 mt-1">&lt; $100 USD/mes — Máxima eficiencia</p>
+            <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50">
+              <div className="text-3xl mb-3">✨</div>
+              <h3 className="font-semibold text-white text-sm mb-2">Máxima Sencillez Fuera</h3>
+              <p className="text-xs text-gray-400">
+                Interfaz natural, lenguaje humano, cero complejidad técnica visible
+              </p>
             </div>
-            <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50">
-              <div className="text-2xl mb-2">🔒</div>
-              <h3 className="font-semibold text-white text-sm">Seguridad</h3>
-              <p className="text-xs text-gray-400 mt-1">Supervisión humana + Mínimo privilegio</p>
+            <div className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50">
+              <div className="text-3xl mb-3">💰</div>
+              <h3 className="font-semibold text-white text-sm mb-2">Mínimo Coste</h3>
+              <p className="text-xs text-gray-400">
+                Optimización extrema, recursos eficientes, ROI inmediato
+              </p>
             </div>
+          </div>
+
+          {/* User Story */}
+          <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-xl p-6">
+            <h3 className="text-sm font-semibold text-cyan-300 uppercase tracking-wider mb-3">
+              Historia de Usuario Principal
+            </h3>
+            <p className="text-gray-200 leading-relaxed">
+              Un autónomo abre TITAN, le dice qué necesita en lenguaje natural, 
+              y recibe el trabajo correctamente realizado. No necesita comprender 
+              la tecnología que existe detrás. Solo necesita confiar en el resultado.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Context */}
+      {/* Principles */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <span>📌</span> Contexto Inicial
+            <span>🎯</span> Principios de Diseño
           </h3>
           <ul className="space-y-3">
             {[
-              { label: "Nivel técnico", value: "Intermedio" },
-              { label: "Presupuesto", value: "< $100 USD/mes" },
-              { label: "Prioridad", value: "Eficiencia + Minimizar costes" },
-              { label: "Infraestructura", value: "Pendiente de selección" },
-              { label: "Estrategia", value: "Diseñar primero, desplegar después" },
-            ].map((item, i) => (
+              "Producto integrado, no colección de prototipos",
+              "Datos persistentes conectan todos los módulos",
+              "Permisos unificados y verificables",
+              "Operaciones auditables y trazables",
+              "Construcción progresiva: núcleo primero, ambición después",
+              "Cada módulo aporta valor inmediato",
+              "La complejidad se oculta, la simplicidad se muestra",
+            ].map((principle, i) => (
               <li key={i} className="flex items-start gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-violet-400 mt-2 shrink-0"></span>
-                <div>
-                  <span className="text-sm text-gray-400">{item.label}: </span>
-                  <span className="text-sm text-white font-medium">{item.value}</span>
-                </div>
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 shrink-0"></span>
+                <span className="text-sm text-gray-300">{principle}</span>
               </li>
             ))}
           </ul>
@@ -247,388 +186,989 @@ function OverviewSection() {
 
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <span>📦</span> Resultados Obligatorios
+            <span>🚫</span> Anti-Patrones a Evitar
           </h3>
-          <ol className="space-y-2">
+          <ul className="space-y-3">
             {[
-              "Documento de visión del proyecto",
-              "Objetivos y casos de uso priorizados",
-              "Diagrama de arquitectura propuesto",
-              "Tecnologías recomendadas y justificación",
-              "Diseño inicial de agentes y responsabilidades",
-              "Modelo de seguridad",
-              "Presupuesto estimado",
-              "Hoja de ruta de implementación",
-              "Riesgos y decisiones pendientes",
-              "Lista de verificación para aprobar Fase 0",
-            ].map((item, i) => (
-              <li key={i} className="flex items-center gap-3 text-sm">
-                <span className="w-6 h-6 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-xs text-gray-400 shrink-0">
-                  {i + 1}
-                </span>
-                <span className="text-gray-300">{item}</span>
+              "Módulos aislados sin conexión de datos",
+              "Complejidad técnica visible para el usuario",
+              "Funcionalidades que requieren conocimiento técnico",
+              "Sobrecarga de características innecesarias",
+              "Dependencia de múltiples herramientas desconectadas",
+              "Procesos manuales donde la automatización es posible",
+              "Costes ocultos o inesperados",
+            ].map((anti, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <span className="text-red-400 mt-0.5">✗</span>
+                <span className="text-sm text-gray-400">{anti}</span>
               </li>
             ))}
-          </ol>
+          </ul>
         </div>
       </div>
 
-      {/* Rules */}
-      <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-6">
-        <h3 className="text-lg font-semibold text-amber-300 mb-4 flex items-center gap-2">
-          <span>⚠️</span> Reglas de Trabajo
+      {/* Success Criteria */}
+      <div className="bg-gradient-to-r from-cyan-500/5 to-blue-500/5 border border-cyan-500/20 rounded-xl p-6">
+        <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <span>✅</span> Criterio de Éxito Definitivo
         </h3>
+        <p className="text-gray-200 leading-relaxed mb-4">
+          TITAN Business OS será un éxito cuando un autónomo pueda:
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[
-            "No avanzar sin autorización explícita",
-            "No comprar ni desplegar servicios",
-            "No asumir herramientas obligatorias",
-            "No inventar integraciones ni capacidades",
-            "Explicar decisiones técnicas con claridad",
-            "Priorizar soluciones simples y seguras",
-            "Mantener presupuesto como restricción",
-            "Trabajar paso a paso, preguntar cuando falte info",
-          ].map((rule, i) => (
+            "Abrir la aplicación sin formación previa",
+            "Expresar necesidades en lenguaje natural",
+            "Recibir resultados correctos y verificables",
+            "Confiar en el sistema sin supervisar cada paso",
+            "Ahorrar tiempo real (horas, no minutos)",
+            "Pagar un coste predecible y justo",
+          ].map((criterion, i) => (
             <div key={i} className="flex items-start gap-2 text-sm">
-              <span className="text-amber-400 mt-0.5">•</span>
-              <span className="text-gray-300">{rule}</span>
+              <span className="text-cyan-400 shrink-0">→</span>
+              <span className="text-gray-300">{criterion}</span>
             </div>
           ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-function QuestionsSection({
-  questions,
-  answers,
-  expandedQuestion,
-  setExpandedQuestion,
-  handleAnswerChange,
-}: {
-  questions: any[];
-  answers: Record<number, string>;
-  expandedQuestion: number | null;
-  setExpandedQuestion: (id: number | null) => void;
-  handleAnswerChange: (id: number, value: string) => void;
-}) {
-  const answeredCount = Object.keys(answers).filter(k => answers[Number(k)]?.trim()).length;
-
-  return (
-    <div className="space-y-6">
-      {/* Progress */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold text-white">
-            0.1 — Definición de Objetivos
-          </h3>
-          <span className="text-sm text-gray-400">
-            {answeredCount} de {questions.length} respondidas
-          </span>
-        </div>
-        <div className="w-full bg-gray-800 rounded-full h-2">
-          <div
-            className="bg-gradient-to-r from-violet-500 to-indigo-500 h-2 rounded-full transition-all duration-500"
-            style={{ width: `${(answeredCount / questions.length) * 100}%` }}
-          ></div>
-        </div>
-        <p className="text-sm text-gray-400 mt-3">
-          Responde estas preguntas estratégicas para que pueda diseñar la arquitectura del sistema. 
-          No avances a la Fase 1 sin tus respuestas.
-        </p>
-      </div>
-
-      {/* Questions */}
-      <div className="space-y-4">
-        {questions.map((question) => (
-          <div
-            key={question.id}
-            className={`bg-gray-900 rounded-xl border transition-all duration-300 ${
-              expandedQuestion === question.id
-                ? 'border-violet-500/30 shadow-lg shadow-violet-500/5'
-                : 'border-gray-800 hover:border-gray-700'
-            }`}
-          >
-            <button
-              onClick={() => setExpandedQuestion(expandedQuestion === question.id ? null : question.id)}
-              className="w-full p-6 text-left"
-            >
-              <div className="flex items-start gap-4">
-                <span className="text-3xl">{question.icon}</span>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h4 className="text-white font-semibold">{question.title}</h4>
-                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                      question.importance === 'CRÍTICA'
-                        ? 'bg-red-500/10 text-red-400 border border-red-500/20'
-                        : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                    }`}>
-                      {question.importance}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-400">{question.description}</p>
-                </div>
-                <span className={`text-gray-500 transition-transform duration-200 ${
-                  expandedQuestion === question.id ? 'rotate-180' : ''
-                }`}>
-                  ▼
-                </span>
-              </div>
-            </button>
-
-            {expandedQuestion === question.id && (
-              <div className="px-6 pb-6 border-t border-gray-800 pt-4">
-                {/* Context */}
-                <div className="bg-gray-800/50 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-gray-300">
-                    <span className="font-medium text-violet-300">¿Por qué importa? </span>
-                    {question.context}
-                  </p>
-                </div>
-
-                {/* Examples */}
-                <div className="mb-4">
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
-                    Ejemplos de respuesta
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {question.examples.map((example: string, i: number) => (
-                      <button
-                        key={i}
-                        onClick={() => handleAnswerChange(question.id, example)}
-                        className={`text-left text-sm p-3 rounded-lg border transition-all ${
-                          answers[question.id] === example
-                            ? 'bg-violet-500/10 border-violet-500/30 text-violet-200'
-                            : 'bg-gray-800/30 border-gray-700/50 text-gray-400 hover:border-gray-600 hover:text-gray-300'
-                        }`}
-                      >
-                        {example}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Text answer */}
-                <div>
-                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2 block">
-                    O escribe tu propia respuesta
-                  </label>
-                  <textarea
-                    value={answers[question.id] || ''}
-                    onChange={(e) => handleAnswerChange(question.id, e.target.value)}
-                    placeholder="Escribe tu respuesta aquí..."
-                    className="w-full bg-gray-800/50 border border-gray-700 rounded-lg p-3 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/20 resize-none"
-                    rows={3}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Summary */}
-      {answeredCount > 0 && (
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">
-            📝 Resumen de Respuestas
-          </h3>
-          <div className="space-y-3">
-            {questions.map((q) => (
-              answers[q.id]?.trim() ? (
-                <div key={q.id} className="flex items-start gap-3 p-3 bg-gray-800/30 rounded-lg">
-                  <span className="text-lg">{q.icon}</span>
-                  <div>
-                    <p className="text-xs text-gray-500 mb-1">{q.title}</p>
-                    <p className="text-sm text-gray-200">{answers[q.id]}</p>
-                  </div>
-                </div>
-              ) : null
-            ))}
-          </div>
-          {answeredCount === questions.length && (
-            <div className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-              <p className="text-sm text-green-300 font-medium">
-                ✅ Has respondido todas las preguntas. Estás listo para que diseñe la arquitectura del sistema.
-              </p>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
 
 function ArchitectureSection() {
-  const components = [
-    { name: "Orquestador de Agentes", status: "pendiente", desc: "Coordina la comunicación entre agentes" },
-    { name: "Modelos de Lenguaje (API)", status: "pendiente", desc: "OpenAI, Anthropic, o alternativas open-source" },
-    { name: "Motor de Workflows", status: "pendiente", desc: "Automatización de procesos (n8n o similar)" },
-    { name: "Memoria Persistente", status: "pendiente", desc: "PostgreSQL + vector store para contexto" },
-    { name: "Sistema de Herramientas", status: "pendiente", desc: "APIs externas y funciones ejecutables" },
-    { name: "Gestión de Credenciales", status: "pendiente", desc: "Vault o variables de entorno seguras" },
-    { name: "Registro de Operaciones", status: "pendiente", desc: "Logs centralizados y auditables" },
-    { name: "Supervisión Humana", status: "pendiente", desc: "Aprobaciones y panel de control" },
-    { name: "Seguridad y Acceso", status: "pendiente", desc: "Auth, RBAC, encriptación" },
-  ];
-
   return (
     <div className="space-y-6">
       <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-        <h3 className="text-lg font-semibold text-white mb-2">
-          0.2 — Diseño de Arquitectura
+        <h3 className="text-lg font-semibold text-white mb-4">
+          Arquitectura General del Sistema
         </h3>
         <p className="text-sm text-gray-400 mb-6">
-          Esta sección se completará tras recibir las respuestas de la Fase 0.1. 
-          La arquitectura se diseñará según los casos de uso reales identificados.
+          TITAN Business OS sigue una arquitectura modular integrada donde todos los componentes 
+          comparten datos persistentes, permisos unificados y operaciones verificables.
         </p>
 
-        {/* Architecture Diagram Placeholder */}
-        <div className="bg-gray-800/50 rounded-xl border border-gray-700/50 p-8 mb-6">
-          <div className="text-center">
-            <div className="text-4xl mb-4">🏗️</div>
-            <h4 className="text-white font-medium mb-2">Diagrama de Arquitectura</h4>
-            <p className="text-sm text-gray-400 max-w-md mx-auto">
-              Se generará tras definir los objetivos. Incluirá la relación entre componentes, 
-              flujos de datos y puntos de integración.
-            </p>
-          </div>
-        </div>
-
-        {/* Components Grid */}
-        <h4 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">
-          Componentes previstos
-        </h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {components.map((comp, i) => (
-            <div key={i} className="bg-gray-800/30 border border-gray-700/50 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-white">{comp.name}</span>
-                <span className="px-2 py-0.5 rounded text-xs bg-gray-700 text-gray-400">
-                  {comp.status}
-                </span>
+        {/* Architecture Layers */}
+        <div className="space-y-4">
+          {/* Presentation Layer */}
+          <div className="bg-gradient-to-r from-cyan-500/10 to-transparent border border-cyan-500/20 rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">🎨</span>
+              <div>
+                <h4 className="font-semibold text-white">Capa de Presentación</h4>
+                <p className="text-xs text-gray-400">Interfaz natural y accesible</p>
               </div>
-              <p className="text-xs text-gray-500">{comp.desc}</p>
             </div>
-          ))}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {["Chat Natural", "Dashboard Visual", "Notificaciones"].map((item, i) => (
+                <div key={i} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/50">
+                  <p className="text-sm text-gray-300">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Orchestration Layer */}
+          <div className="bg-gradient-to-r from-violet-500/10 to-transparent border border-violet-500/20 rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">🎭</span>
+              <div>
+                <h4 className="font-semibold text-white">Capa de Orquestación</h4>
+                <p className="text-xs text-gray-400">Coordinación inteligente de agentes</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {["Agente Coordinador", "Motor de Decisiones", "Gestor de Contexto"].map((item, i) => (
+                <div key={i} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/50">
+                  <p className="text-sm text-gray-300">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Business Logic Layer */}
+          <div className="bg-gradient-to-r from-blue-500/10 to-transparent border border-blue-500/20 rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">⚙️</span>
+              <div>
+                <h4 className="font-semibold text-white">Capa de Lógica de Negocio</h4>
+                <p className="text-xs text-gray-400">Módulos funcionales especializados</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {["Facturación", "Clientes", "Proyectos", "Finanzas", "Documentos", "Comunicación", "Análisis", "Automatización"].map((item, i) => (
+                <div key={i} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/50">
+                  <p className="text-sm text-gray-300">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Data Layer */}
+          <div className="bg-gradient-to-r from-emerald-500/10 to-transparent border border-emerald-500/20 rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">💾</span>
+              <div>
+                <h4 className="font-semibold text-white">Capa de Datos</h4>
+                <p className="text-xs text-gray-400">Persistencia unificada y segura</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {["Base de Datos Principal", "Almacenamiento de Archivos", "Caché y Sesiones"].map((item, i) => (
+                <div key={i} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/50">
+                  <p className="text-sm text-gray-300">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Integration Layer */}
+          <div className="bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/20 rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">🔗</span>
+              <div>
+                <h4 className="font-semibold text-white">Capa de Integración</h4>
+                <p className="text-xs text-gray-400">Conexiones con servicios externos</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {["Email", "Pasarelas de Pago", "Bancos", "APIs Públicas", "Cloud Storage", "Mensajería", "Calendarios", "Otros"].map((item, i) => (
+                <div key={i} className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/50">
+                  <p className="text-sm text-gray-300">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Indispensable vs Optional */}
+      {/* Key Architectural Decisions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-          <h4 className="text-sm font-medium text-green-400 uppercase tracking-wider mb-3">
-            ✅ Indispensables (MVP)
+          <h4 className="text-sm font-medium text-cyan-400 uppercase tracking-wider mb-3">
+            Decisiones Arquitectónicas Clave
           </h4>
-          <ul className="space-y-2">
-            {["Orquestador básico", "Modelo de lenguaje (1 API)", "Almacenamiento persistente", "Gestión de credenciales", "Logs básicos"].map((item, i) => (
-              <li key={i} className="flex items-center gap-2 text-sm text-gray-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400"></span>
-                {item}
+          <ul className="space-y-3">
+            {[
+              { decision: "Base de datos única", reason: "Todos los módulos comparten el mismo store" },
+              { decision: "API REST + WebSocket", reason: "Comunicación síncrona y en tiempo real" },
+              { decision: "Autenticación centralizada", reason: "JWT con refresh tokens y RBAC" },
+              { decision: "Event-driven architecture", reason: "Módulos reaccionan a cambios de datos" },
+              { decision: "Queue system para tareas largas", reason: "No bloquear la interfaz" },
+            ].map((item, i) => (
+              <li key={i} className="bg-gray-800/30 rounded-lg p-3">
+                <p className="text-sm font-medium text-white mb-1">{item.decision}</p>
+                <p className="text-xs text-gray-400">{item.reason}</p>
               </li>
             ))}
           </ul>
         </div>
+
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-          <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">
-            🔲 Opcionales (Fases posteriores)
+          <h4 className="text-sm font-medium text-violet-400 uppercase tracking-wider mb-3">
+            Stack Tecnológico Recomendado
           </h4>
-          <ul className="space-y-2">
-            {["Motor de workflows avanzado", "Vector store para RAG", "Múltiples modelos", "Dashboard de supervisión", "Sistema de alertas"].map((item, i) => (
-              <li key={i} className="flex items-center gap-2 text-sm text-gray-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-gray-600"></span>
-                {item}
-              </li>
+          <div className="space-y-3">
+            {[
+              { layer: "Frontend", tech: "React + TypeScript + Tailwind CSS" },
+              { layer: "Backend", tech: "Node.js + Express/Fastify + TypeScript" },
+              { layer: "Base de Datos", tech: "PostgreSQL + Prisma ORM" },
+              { layer: "Cache", tech: "Redis para sesiones y datos frecuentes" },
+              { layer: "Queue", tech: "Bull/BullMQ para tareas asíncronas" },
+              { layer: "IA", tech: "OpenAI API / Anthropic Claude API" },
+              { layer: "Deploy", tech: "Docker + VPS (Hetzner/DigitalOcean)" },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <span className="text-xs font-medium text-gray-500 w-20 shrink-0">{item.layer}:</span>
+                <span className="text-sm text-gray-300">{item.tech}</span>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function BudgetSection() {
-  const budgetItems = [
-    { category: "Infraestructura", items: [
-      { name: "VPS / Cloud (Hetzner, DigitalOcean)", min: 5, max: 20, type: "fijo" },
-      { name: "Docker + gestión", min: 0, max: 0, type: "incluido" },
-    ]},
-    { category: "Modelos de IA", items: [
-      { name: "OpenAI API (GPT-4o-mini / GPT-4o)", min: 5, max: 40, type: "variable" },
-      { name: "Anthropic API (Claude)", min: 0, max: 20, type: "variable" },
-      { name: "Modelos open-source (Ollama local)", min: 0, max: 0, type: "gratis" },
-    ]},
-    { category: "Almacenamiento", items: [
-      { name: "PostgreSQL (hosting o self-hosted)", min: 0, max: 15, type: "fijo" },
-      { name: "Almacenamiento de archivos", min: 0, max: 5, type: "fijo" },
-    ]},
-    { category: "Herramientas", items: [
-      { name: "n8n (self-hosted)", min: 0, max: 0, type: "gratis" },
-      { name: "Monitorización básica", min: 0, max: 5, type: "fijo" },
-    ]},
+function ModulesSection({
+  expandedModule,
+  setExpandedModule,
+}: {
+  expandedModule: string | null;
+  setExpandedModule: (id: string | null) => void;
+}) {
+  const modules = [
+    {
+      id: 'billing',
+      name: 'Módulo de Facturación',
+      icon: '🧾',
+      priority: 'CRÍTICO',
+      description: 'Generación automática de facturas, presupuestos y recibos',
+      features: [
+        'Creación de facturas desde lenguaje natural',
+        'Cálculo automático de impuestos (IVA, IRPF)',
+        'Generación de PDFs profesionales',
+        'Control de estados (borrador, enviada, pagada)',
+        'Recordatorios automáticos de pago',
+        'Exportación a formatos estándar',
+      ],
+      data: ['Facturas', 'Líneas de factura', 'Impuestos', 'Series numeración'],
+      integrations: ['Email', 'Pasarelas de pago', 'Bancos'],
+    },
+    {
+      id: 'clients',
+      name: 'Módulo de Clientes',
+      icon: '👥',
+      priority: 'CRÍTICO',
+      description: 'Gestión completa de la base de datos de clientes',
+      features: [
+        'Fichas de cliente con historial completo',
+        'Búsqueda inteligente y filtrado',
+        'Segmentación automática',
+        'Comunicación centralizada',
+        'Notas y etiquetas personalizadas',
+        'Importación/exportación de datos',
+      ],
+      data: ['Clientes', 'Contactos', 'Historial', 'Etiquetas'],
+      integrations: ['Email', 'Calendario', 'CRM externo'],
+    },
+    {
+      id: 'projects',
+      name: 'Módulo de Proyectos',
+      icon: '📋',
+      priority: 'ALTO',
+      description: 'Organización y seguimiento de proyectos y tareas',
+      features: [
+        'Creación de proyectos desde descripción natural',
+        'Desglose automático en tareas',
+        'Asignación de tiempos y recursos',
+        'Seguimiento de progreso',
+        'Registro de tiempo trabajado',
+        'Informes de productividad',
+      ],
+      data: ['Proyectos', 'Tareas', 'Tiempos', 'Entregables'],
+      integrations: ['Calendario', 'Email', 'Almacenamiento'],
+    },
+    {
+      id: 'finance',
+      name: 'Módulo Financiero',
+      icon: '💰',
+      priority: 'ALTO',
+      description: 'Control de ingresos, gastos y salud financiera',
+      features: [
+        'Registro automático de movimientos',
+        'Categorización inteligente de gastos',
+        'Conciliación bancaria',
+        'Previsión de flujo de caja',
+        'Informes financieros',
+        'Alertas de umbrales',
+      ],
+      data: ['Movimientos', 'Categorías', 'Cuentas', 'Presupuestos'],
+      integrations: ['Bancos', 'Pasarelas de pago'],
+    },
+    {
+      id: 'documents',
+      name: 'Módulo de Documentos',
+      icon: '📄',
+      priority: 'MEDIO',
+      description: 'Gestión inteligente de documentos y archivos',
+      features: [
+        'Almacenamiento organizado',
+        'Extracción automática de datos',
+        'Clasificación inteligente',
+        'Búsqueda por contenido',
+        'Versionado de documentos',
+        'Firmas digitales',
+      ],
+      data: ['Documentos', 'Versiones', 'Metadatos', 'Permisos'],
+      integrations: ['Cloud storage', 'Email', 'Firma digital'],
+    },
+    {
+      id: 'communication',
+      name: 'Módulo de Comunicación',
+      icon: '💬',
+      priority: 'MEDIO',
+      description: 'Centralización de comunicaciones con clientes',
+      features: [
+        'Email unificado',
+        'Plantillas inteligentes',
+        'Seguimiento de respuestas',
+        'Programación de envíos',
+        'Historial por cliente',
+        'Notificaciones push',
+      ],
+      data: ['Mensajes', 'Plantillas', 'Conversaciones', 'Contactos'],
+      integrations: ['Email', 'SMS', 'WhatsApp', 'Telegram'],
+    },
+    {
+      id: 'analytics',
+      name: 'Módulo de Análisis',
+      icon: '📊',
+      priority: 'MEDIO',
+      description: 'Inteligencia de negocio y reporting',
+      features: [
+        'Dashboards personalizables',
+        'KPIs automáticos',
+        'Informes periódicos',
+        'Análisis de tendencias',
+        'Predicciones básicas',
+        'Exportación de datos',
+      ],
+      data: ['Métricas', 'Informes', 'Alertas', 'Configuraciones'],
+      integrations: ['Todos los módulos'],
+    },
+    {
+      id: 'automation',
+      name: 'Módulo de Automatización',
+      icon: '🤖',
+      priority: 'ALTO',
+      description: 'Motor de automatizaciones y workflows',
+      features: [
+        'Creación de flujos desde lenguaje natural',
+        'Triggers condicionales',
+        'Acciones encadenadas',
+        'Templates predefinidos',
+        'Monitorización de ejecuciones',
+        'Logs detallados',
+      ],
+      data: ['Workflows', 'Triggers', 'Acciones', 'Ejecuciones'],
+      integrations: ['Todos los módulos', 'APIs externas'],
+    },
   ];
 
   return (
     <div className="space-y-6">
       <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
         <h3 className="text-lg font-semibold text-white mb-2">
-          0.6 — Presupuesto Estimado
+          Módulos Funcionales
         </h3>
         <p className="text-sm text-gray-400 mb-6">
-          Estimación preliminar. Los costes reales dependerán del uso y las decisiones de la Fase 0.1.
+          Cada módulo es una unidad funcional independiente pero completamente integrada con el resto del sistema.
+          Todos comparten datos, permisos y operaciones.
         </p>
 
-        {/* Budget Summary */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="bg-green-500/5 border border-green-500/20 rounded-xl p-4 text-center">
-            <p className="text-xs text-green-400 uppercase tracking-wider mb-1">Escenario Mínimo</p>
-            <p className="text-2xl font-bold text-green-300">~$10</p>
-            <p className="text-xs text-gray-400">Uso básico, modelos económicos</p>
-          </div>
-          <div className="bg-violet-500/5 border border-violet-500/20 rounded-xl p-4 text-center">
-            <p className="text-xs text-violet-400 uppercase tracking-wider mb-1">Escenario Medio</p>
-            <p className="text-2xl font-bold text-violet-300">~$40</p>
-            <p className="text-xs text-gray-400">Uso moderado, mix de modelos</p>
-          </div>
-          <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 text-center">
-            <p className="text-xs text-amber-400 uppercase tracking-wider mb-1">Límite Máximo</p>
-            <p className="text-2xl font-bold text-amber-300">$100</p>
-            <p className="text-xs text-gray-400">Tope presupuestario</p>
+        {/* Modules Grid */}
+        <div className="space-y-4">
+          {modules.map((module) => (
+            <div
+              key={module.id}
+              className={`bg-gray-800/30 rounded-xl border transition-all duration-300 ${
+                expandedModule === module.id
+                  ? 'border-cyan-500/30 shadow-lg shadow-cyan-500/5'
+                  : 'border-gray-700/50 hover:border-gray-600'
+              }`}
+            >
+              <button
+                onClick={() => setExpandedModule(expandedModule === module.id ? null : module.id)}
+                className="w-full p-5 text-left"
+              >
+                <div className="flex items-start gap-4">
+                  <span className="text-3xl">{module.icon}</span>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h4 className="text-white font-semibold">{module.name}</h4>
+                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                        module.priority === 'CRÍTICO'
+                          ? 'bg-red-500/10 text-red-400 border border-red-500/20'
+                          : module.priority === 'ALTO'
+                          ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                          : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                      }`}>
+                        {module.priority}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-400">{module.description}</p>
+                  </div>
+                  <span className={`text-gray-500 transition-transform duration-200 ${
+                    expandedModule === module.id ? 'rotate-180' : ''
+                  }`}>
+                    ▼
+                  </span>
+                </div>
+              </button>
+
+              {expandedModule === module.id && (
+                <div className="px-5 pb-5 border-t border-gray-700/50 pt-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    {/* Features */}
+                    <div>
+                      <h5 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
+                        Funcionalidades
+                      </h5>
+                      <ul className="space-y-1.5">
+                        {module.features.map((feature, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                            <span className="text-cyan-400 mt-0.5">•</span>
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Data Models */}
+                    <div>
+                      <h5 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
+                        Modelos de Datos
+                      </h5>
+                      <div className="flex flex-wrap gap-2">
+                        {module.data.map((data, i) => (
+                          <span key={i} className="px-2 py-1 rounded bg-gray-700/50 border border-gray-600/50 text-xs text-gray-300">
+                            {data}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Integrations */}
+                    <div>
+                      <h5 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
+                        Integraciones
+                      </h5>
+                      <div className="flex flex-wrap gap-2">
+                        {module.integrations.map((integration, i) => (
+                          <span key={i} className="px-2 py-1 rounded bg-violet-500/10 border border-violet-500/20 text-xs text-violet-300">
+                            {integration}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DataSection() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">
+          Modelo de Datos Unificado
+        </h3>
+        <p className="text-sm text-gray-400 mb-6">
+          Todos los módulos comparten una base de datos centralizada con relaciones explícitas.
+          Esto garantiza consistencia, integridad y trazabilidad completa.
+        </p>
+
+        {/* Core Entities */}
+        <div className="space-y-4">
+          <h4 className="text-sm font-medium text-cyan-400 uppercase tracking-wider">
+            Entidades Principales
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { entity: 'User', fields: ['id', 'email', 'name', 'role', 'settings'] },
+              { entity: 'Client', fields: ['id', 'name', 'email', 'phone', 'address', 'taxId'] },
+              { entity: 'Invoice', fields: ['id', 'clientId', 'number', 'date', 'total', 'status'] },
+              { entity: 'Project', fields: ['id', 'clientId', 'name', 'status', 'budget', 'deadline'] },
+              { entity: 'Task', fields: ['id', 'projectId', 'title', 'status', 'estimatedTime'] },
+              { entity: 'Transaction', fields: ['id', 'type', 'amount', 'category', 'date'] },
+            ].map((item, i) => (
+              <div key={i} className="bg-gray-800/30 border border-gray-700/50 rounded-lg p-4">
+                <h5 className="font-semibold text-white mb-2">{item.entity}</h5>
+                <div className="space-y-1">
+                  {item.fields.map((field, j) => (
+                    <div key={j} className="text-xs text-gray-400 font-mono">
+                      {field}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Budget Breakdown */}
+        {/* Relationships */}
+        <div className="mt-8">
+          <h4 className="text-sm font-medium text-violet-400 uppercase tracking-wider mb-3">
+            Relaciones Clave
+          </h4>
+          <div className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/50">
+            <div className="space-y-2 text-sm text-gray-300">
+              <p><span className="text-cyan-400 font-mono">Client</span> → <span className="text-cyan-400 font-mono">Invoice</span> (1:N)</p>
+              <p><span className="text-cyan-400 font-mono">Client</span> → <span className="text-cyan-400 font-mono">Project</span> (1:N)</p>
+              <p><span className="text-cyan-400 font-mono">Project</span> → <span className="text-cyan-400 font-mono">Task</span> (1:N)</p>
+              <p><span className="text-cyan-400 font-mono">Invoice</span> → <span className="text-cyan-400 font-mono">Transaction</span> (1:N)</p>
+              <p><span className="text-cyan-400 font-mono">Project</span> → <span className="text-cyan-400 font-mono">Invoice</span> (N:M)</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Data Principles */}
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-gray-800/30 rounded-lg p-5 border border-gray-700/50">
+            <h5 className="text-sm font-medium text-white mb-3">Principios de Datos</h5>
+            <ul className="space-y-2 text-sm text-gray-300">
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400">→</span>
+                <span>Integridad referencial estricta</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400">→</span>
+                <span>Soft delete para auditoría</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400">→</span>
+                <span>Timestamps automáticos</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400">→</span>
+                <span>Versionado de cambios críticos</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-gray-800/30 rounded-lg p-5 border border-gray-700/50">
+            <h5 className="text-sm font-medium text-white mb-3">Estrategia de Persistencia</h5>
+            <ul className="space-y-2 text-sm text-gray-300">
+              <li className="flex items-start gap-2">
+                <span className="text-violet-400">→</span>
+                <span>PostgreSQL como fuente de verdad</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-violet-400">→</span>
+                <span>Redis para caché y sesiones</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-violet-400">→</span>
+                <span>S3/MinIO para archivos</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-violet-400">→</span>
+                <span>Backups automáticos diarios</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FlowsSection() {
+  const flows = [
+    {
+      name: 'Flujo de Facturación',
+      steps: [
+        'Usuario describe trabajo realizado',
+        'IA extrae datos y crea borrador de factura',
+        'Usuario revisa y aprueba',
+        'Sistema genera PDF y envía por email',
+        'Se registra en contabilidad',
+        'Se actualiza estado del proyecto',
+      ],
+    },
+    {
+      name: 'Flujo de Nuevo Cliente',
+      steps: [
+        'Usuario introduce datos del cliente',
+        'Sistema crea ficha y verifica duplicados',
+        'Se genera plantilla de bienvenida',
+        'Se envía email de presentación',
+        'Se crea proyecto si aplica',
+        'Se programa seguimiento',
+      ],
+    },
+    {
+      name: 'Flujo de Automatización',
+      steps: [
+        'Usuario describe automatización deseada',
+        'IA interpreta y propone flujo',
+        'Usuario ajusta parámetros',
+        'Sistema crea workflow',
+        'Se ejecuta según triggers',
+        'Se notifican resultados',
+      ],
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">
+          Flujos Operativos Principales
+        </h3>
+        <p className="text-sm text-gray-400 mb-6">
+          Los flujos muestran cómo los módulos trabajan juntos para completar tareas complejas
+          de forma automática y coordinada.
+        </p>
+
+        <div className="space-y-6">
+          {flows.map((flow, i) => (
+            <div key={i} className="bg-gray-800/30 rounded-xl border border-gray-700/50 p-5">
+              <h4 className="font-semibold text-white mb-4 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-xs text-cyan-300">
+                  {i + 1}
+                </span>
+                {flow.name}
+              </h4>
+              <div className="relative">
+                <div className="absolute left-3 top-3 bottom-3 w-px bg-gray-700"></div>
+                <div className="space-y-3">
+                  {flow.steps.map((step, j) => (
+                    <div key={j} className="relative pl-10">
+                      <div className="absolute left-1.5 w-3 h-3 rounded-full bg-cyan-500/30 border-2 border-cyan-400"></div>
+                      <p className="text-sm text-gray-300">{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Event System */}
+      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <h4 className="text-sm font-medium text-violet-400 uppercase tracking-wider mb-3">
+          Sistema de Eventos
+        </h4>
+        <p className="text-sm text-gray-400 mb-4">
+          Los módulos se comunican mediante eventos. Cuando algo cambia en un módulo,
+          se emite un evento que otros módulos pueden escuchar y procesar.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            'invoice.created',
+            'client.updated',
+            'payment.received',
+            'project.completed',
+            'task.assigned',
+            'automation.triggered',
+          ].map((event, i) => (
+            <div key={i} className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
+              <code className="text-sm text-violet-300">{event}</code>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IntegrationsSection() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">
+          Integraciones con Servicios Externos
+        </h3>
+        <p className="text-sm text-gray-400 mb-6">
+          TITAN se conecta con servicios externos para ampliar sus capacidades.
+          Todas las integraciones siguen el mismo patrón: autenticación segura, 
+          manejo de errores y sincronización de datos.
+        </p>
+
+        {/* Integration Categories */}
+        <div className="space-y-6">
+          {/* Email */}
+          <div>
+            <h4 className="text-sm font-medium text-cyan-400 uppercase tracking-wider mb-3">
+              Comunicación
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {[
+                { name: 'Gmail / Outlook', status: 'prioritario' },
+                { name: 'SendGrid / Mailgun', status: 'prioritario' },
+                { name: 'WhatsApp Business', status: 'fase 2' },
+                { name: 'Telegram Bot', status: 'fase 2' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
+                  <p className="text-sm text-gray-300 mb-1">{item.name}</p>
+                  <span className={`text-xs ${
+                    item.status === 'prioritario' ? 'text-green-400' : 'text-gray-500'
+                  }`}>
+                    {item.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Payments */}
+          <div>
+            <h4 className="text-sm font-medium text-cyan-400 uppercase tracking-wider mb-3">
+              Pagos
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {[
+                { name: 'Stripe', status: 'prioritario' },
+                { name: 'PayPal', status: 'fase 2' },
+                { name: 'Redsys (España)', status: 'fase 2' },
+                { name: 'Criptomonedas', status: 'opcional' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
+                  <p className="text-sm text-gray-300 mb-1">{item.name}</p>
+                  <span className={`text-xs ${
+                    item.status === 'prioritario' ? 'text-green-400' : 
+                    item.status === 'fase 2' ? 'text-amber-400' : 'text-gray-500'
+                  }`}>
+                    {item.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Banking */}
+          <div>
+            <h4 className="text-sm font-medium text-cyan-400 uppercase tracking-wider mb-3">
+              Banca
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {[
+                { name: 'Plaid (EU)', status: 'prioritario' },
+                { name: 'Open Banking APIs', status: 'prioritario' },
+                { name: 'Importación CSV', status: 'fallback' },
+                { name: 'Conciliación manual', status: 'fallback' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
+                  <p className="text-sm text-gray-300 mb-1">{item.name}</p>
+                  <span className={`text-xs ${
+                    item.status === 'prioritario' ? 'text-green-400' : 
+                    item.status === 'fallback' ? 'text-blue-400' : 'text-gray-500'
+                  }`}>
+                    {item.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* AI */}
+          <div>
+            <h4 className="text-sm font-medium text-cyan-400 uppercase tracking-wider mb-3">
+              Inteligencia Artificial
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {[
+                { name: 'OpenAI GPT-4', status: 'prioritario' },
+                { name: 'Anthropic Claude', status: 'prioritario' },
+                { name: 'Modelos open-source', status: 'opcional' },
+                { name: 'Embeddings (vector)', status: 'fase 2' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
+                  <p className="text-sm text-gray-300 mb-1">{item.name}</p>
+                  <span className={`text-xs ${
+                    item.status === 'prioritario' ? 'text-green-400' : 
+                    item.status === 'fase 2' ? 'text-amber-400' : 'text-gray-500'
+                  }`}>
+                    {item.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Integration Pattern */}
+      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <h4 className="text-sm font-medium text-violet-400 uppercase tracking-wider mb-3">
+          Patrón de Integración Estándar
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[
+            'OAuth 2.0 para autenticación',
+            'Webhooks para notificaciones',
+            'Rate limiting y retry logic',
+            'Cifrado de credenciales',
+            'Logs de todas las operaciones',
+            'Fallbacks manuales si falla',
+          ].map((pattern, i) => (
+            <div key={i} className="flex items-start gap-2 text-sm text-gray-300">
+              <span className="text-violet-400">→</span>
+              <span>{pattern}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SecuritySection() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">
+          Modelo de Seguridad
+        </h3>
+        <p className="text-sm text-gray-400 mb-6">
+          La seguridad es transversal a todo el sistema. Cada capa, cada módulo, cada operación
+          sigue los mismos principios de protección.
+        </p>
+
+        {/* Security Layers */}
         <div className="space-y-4">
-          {budgetItems.map((category, i) => (
-            <div key={i}>
-              <h4 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-2">
-                {category.category}
+          <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-xl p-5">
+            <h4 className="text-sm font-medium text-cyan-400 uppercase tracking-wider mb-3">
+              Autenticación
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {['JWT con refresh tokens', 'MFA opcional', 'Sesiones seguras', 'Bloqueo tras intentos fallidos'].map((item, j) => (
+                <div key={j} className="flex items-start gap-2 text-sm text-gray-300">
+                  <span className="text-cyan-400">✓</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-violet-500/5 border border-violet-500/20 rounded-xl p-5">
+            <h4 className="text-sm font-medium text-violet-400 uppercase tracking-wider mb-3">
+              Autorización
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {['RBAC (Role-Based Access Control)', 'Permisos granulares por recurso', 'Herencia de permisos', 'Auditoría de accesos'].map((item, j) => (
+                <div key={j} className="flex items-start gap-2 text-sm text-gray-300">
+                  <span className="text-violet-400">✓</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-5">
+            <h4 className="text-sm font-medium text-blue-400 uppercase tracking-wider mb-3">
+              Protección de Datos
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {['Cifrado en tránsito (TLS)', 'Cifrado en reposo', 'Datos sensibles aislados', 'Backups encriptados'].map((item, j) => (
+                <div key={j} className="flex items-start gap-2 text-sm text-gray-300">
+                  <span className="text-blue-400">✓</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-5">
+            <h4 className="text-sm font-medium text-emerald-400 uppercase tracking-wider mb-3">
+              Seguridad de Aplicación
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {['Validación de inputs', 'Protección CSRF/XSS', 'Rate limiting', 'Sanitización de datos'].map((item, j) => (
+                <div key={j} className="flex items-start gap-2 text-sm text-gray-300">
+                  <span className="text-emerald-400">✓</span>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Compliance */}
+      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <h4 className="text-sm font-medium text-amber-400 uppercase tracking-wider mb-3">
+          Cumplimiento Normativo
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            { norm: 'GDPR / RGPD', desc: 'Protección de datos europeos' },
+            { norm: 'LOPDGDD', desc: 'Ley orgánica española' },
+            { norm: 'Facturación electrónica', desc: 'Veri*factu (España)' },
+            { norm: 'Conservación de datos', desc: '4 años mínimos fiscales' },
+          ].map((item, i) => (
+            <div key={i} className="bg-amber-500/5 border border-amber-500/20 rounded-lg p-4">
+              <p className="text-sm font-medium text-amber-300 mb-1">{item.norm}</p>
+              <p className="text-xs text-gray-400">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AcceptanceSection() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">
+          Criterios Objetivos de Aceptación
+        </h3>
+        <p className="text-sm text-gray-400 mb-6">
+          TITAN Business OS se considera funcional cuando cumple todos estos criterios.
+          No son objetivos, son requisitos mínimos.
+        </p>
+
+        {/* Acceptance Criteria */}
+        <div className="space-y-4">
+          {[
+            {
+              category: 'Funcionalidad Core',
+              criteria: [
+                'Crear factura desde descripción en lenguaje natural',
+                'Generar PDF de factura válido fiscalmente',
+                'Enviar factura por email automáticamente',
+                'Registrar pago y actualizar estado',
+                'Crear ficha de cliente completa',
+                'Asociar facturas a clientes y proyectos',
+              ],
+            },
+            {
+              category: 'Integración de Datos',
+              criteria: [
+                'Todos los módulos comparten la misma base de datos',
+                'Cambios en un módulo se reflejan instantáneamente en otros',
+                'No existe información duplicada o inconsistente',
+                'Trazabilidad completa de todas las operaciones',
+                'Backups automáticos y verificables',
+              ],
+            },
+            {
+              category: 'Experiencia de Usuario',
+              criteria: [
+                'Interfaz completamente en español',
+                'No requiere formación técnica previa',
+                'Todas las acciones principales en máximo 3 clics',
+                'Feedback inmediato de todas las operaciones',
+                'Recuperación automática ante errores',
+              ],
+            },
+            {
+              category: 'Seguridad y Privacidad',
+              criteria: [
+                'Autenticación segura con JWT',
+                'Datos cifrados en tránsito y reposo',
+                'Permisos granulares verificables',
+                'Logs de auditoría completos',
+                'Cumplimiento GDPR/LOPDGDD',
+              ],
+            },
+            {
+              category: 'Rendimiento y Fiabilidad',
+              criteria: [
+                'Tiempo de respuesta < 2 segundos',
+                'Disponibilidad > 99.5%',
+                'Sin pérdida de datos ante fallos',
+                'Escalable a 1000 usuarios concurrentes',
+                'Monitorización y alertas automáticas',
+              ],
+            },
+            {
+              category: 'Coste y Sostenibilidad',
+              criteria: [
+                'Coste infraestructura < $50/mes para 100 usuarios',
+                'Coste IA < $0.50 por operación compleja',
+                'Sin costes ocultos o sorpresas',
+                'ROI demostrable en primer mes',
+                'Mantenimiento < 5 horas/mes',
+              ],
+            },
+          ].map((section, i) => (
+            <div key={i} className="bg-gray-800/30 rounded-xl border border-gray-700/50 p-5">
+              <h4 className="text-sm font-medium text-cyan-400 uppercase tracking-wider mb-3">
+                {section.category}
               </h4>
               <div className="space-y-2">
-                {category.items.map((item, j) => (
-                  <div key={j} className="flex items-center justify-between bg-gray-800/30 rounded-lg p-3 border border-gray-700/30">
-                    <div className="flex items-center gap-3">
-                      <span className={`w-2 h-2 rounded-full ${
-                        item.type === 'gratis' ? 'bg-green-400' :
-                        item.type === 'fijo' ? 'bg-blue-400' :
-                        item.type === 'variable' ? 'bg-amber-400' : 'bg-gray-400'
-                      }`}></span>
-                      <span className="text-sm text-gray-300">{item.name}</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm text-gray-400">
-                        {item.min === item.max ? (item.min === 0 ? 'Gratis' : `$${item.min}`) : `$${item.min}-$${item.max}`}
-                      </span>
-                      <span className={`px-2 py-0.5 rounded text-xs ${
-                        item.type === 'gratis' ? 'bg-green-500/10 text-green-400' :
-                        item.type === 'fijo' ? 'bg-blue-500/10 text-blue-400' :
-                        item.type === 'variable' ? 'bg-amber-500/10 text-amber-400' :
-                        'bg-gray-700 text-gray-400'
-                      }`}>
-                        {item.type}
-                      </span>
-                    </div>
+                {section.criteria.map((criterion, j) => (
+                  <div key={j} className="flex items-start gap-3">
+                    <span className="w-4 h-4 rounded border border-green-500/30 bg-green-500/10 shrink-0 mt-0.5"></span>
+                    <span className="text-sm text-gray-300">{criterion}</span>
                   </div>
                 ))}
               </div>
@@ -637,158 +1177,17 @@ function BudgetSection() {
         </div>
       </div>
 
-      {/* Cost Optimization Tips */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-        <h4 className="text-sm font-medium text-violet-400 uppercase tracking-wider mb-3">
-          💡 Estrategias de Optimización
+      {/* Definition of Done */}
+      <div className="bg-gradient-to-r from-green-500/5 to-emerald-500/5 border border-green-500/20 rounded-xl p-6">
+        <h4 className="text-sm font-medium text-green-400 uppercase tracking-wider mb-3">
+          Definition of Done (DoD)
         </h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {[
-            "Usar modelos pequeños para tareas simples (GPT-4o-mini)",
-            "Self-hosting de n8n y PostgreSQL para eliminar costes fijos",
-            "Cachear respuestas frecuentes para reducir llamadas a APIs",
-            "Usar modelos open-source locales cuando sea posible",
-            "Implementar límites de uso por agente y por día",
-            "Monitorizar consumo en tiempo real para detectar anomalías",
-          ].map((tip, i) => (
-            <div key={i} className="flex items-start gap-2 text-sm text-gray-300 bg-gray-800/30 rounded-lg p-3">
-              <span className="text-violet-400 shrink-0">→</span>
-              <span>{tip}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function RoadmapSection() {
-  const phases = [
-    {
-      phase: "Fase 0",
-      title: "Definición y Diseño",
-      status: "actual",
-      description: "Objetivos, arquitectura, tecnologías, seguridad y presupuesto",
-      tasks: ["Definir objetivos", "Diseñar arquitectura", "Seleccionar tecnologías", "Planificar seguridad", "Estimar presupuesto"]
-    },
-    {
-      phase: "Fase 1",
-      title: "MVP — Primer Agente",
-      status: "pendiente",
-      description: "Un agente funcional que resuelva UN problema concreto",
-      tasks: ["Configurar infraestructura base", "Implementar un agente simple", "Conectar 1-2 herramientas", "Validar funcionamiento"]
-    },
-    {
-      phase: "Fase 2",
-      title: "Expansión Controlada",
-      status: "pendiente",
-      description: "Añadir más agentes, memoria y automatizaciones",
-      tasks: ["Sistema de memoria persistente", "Motor de workflows", "Segundo agente especializado", "Panel de supervisión básico"]
-    },
-    {
-      phase: "Fase 3",
-      title: "Optimización y Escalado",
-      status: "pendiente",
-      description: "Mejorar eficiencia, seguridad y capacidades",
-      tasks: ["Optimización de costes", "Hardening de seguridad", "Métricas y monitorización", "Documentación completa"]
-    },
-  ];
-
-  return (
-    <div className="space-y-6">
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-        <h3 className="text-lg font-semibold text-white mb-2">
-          0.7 — Plan de Implementación
-        </h3>
-        <p className="text-sm text-gray-400 mb-6">
-          Hoja de ruta provisional. Se ajustará según las decisiones de la Fase 0.1.
+        <p className="text-sm text-gray-300 leading-relaxed">
+          Un módulo se considera "terminado" cuando: está implementado, probado, documentado,
+          integrado con el resto del sistema, cumple los criterios de aceptación específicos,
+          y ha sido validado por al menos un usuario real en condiciones de uso normales.
         </p>
-
-        {/* Timeline */}
-        <div className="relative">
-          <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-800"></div>
-          <div className="space-y-6">
-            {phases.map((phase, i) => (
-              <div key={i} className="relative pl-14">
-                <div className={`absolute left-4 w-5 h-5 rounded-full border-2 ${
-                  phase.status === 'actual'
-                    ? 'bg-violet-500 border-violet-400 shadow-lg shadow-violet-500/30'
-                    : 'bg-gray-800 border-gray-600'
-                }`}></div>
-                <div className={`rounded-xl border p-5 ${
-                  phase.status === 'actual'
-                    ? 'bg-violet-500/5 border-violet-500/20'
-                    : 'bg-gray-800/30 border-gray-700/50'
-                }`}>
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                      phase.status === 'actual'
-                        ? 'bg-violet-500/20 text-violet-300'
-                        : 'bg-gray-700 text-gray-400'
-                    }`}>
-                      {phase.phase}
-                    </span>
-                    <h4 className={`font-semibold ${phase.status === 'actual' ? 'text-white' : 'text-gray-300'}`}>
-                      {phase.title}
-                    </h4>
-                  </div>
-                  <p className="text-sm text-gray-400 mb-3">{phase.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {phase.tasks.map((task, j) => (
-                      <span key={j} className="px-2 py-1 rounded bg-gray-800/50 border border-gray-700/50 text-xs text-gray-400">
-                        {task}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Pending Decisions */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-        <h4 className="text-sm font-medium text-amber-400 uppercase tracking-wider mb-3">
-          ⏳ Decisiones Pendientes
-        </h4>
-        <div className="space-y-2">
-          {[
-            "Selección de proveedor cloud / VPS",
-            "Elección de modelo de lenguaje principal",
-            "Definición del primer caso de uso prioritario",
-            "Nivel de autonomía inicial de los agentes",
-            "Herramientas externas prioritarias",
-          ].map((decision, i) => (
-            <div key={i} className="flex items-center gap-3 p-3 bg-amber-500/5 border border-amber-500/10 rounded-lg">
-              <span className="w-4 h-4 rounded border border-amber-500/30 shrink-0"></span>
-              <span className="text-sm text-gray-300">{decision}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Risks */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-        <h4 className="text-sm font-medium text-red-400 uppercase tracking-wider mb-3">
-          🚨 Riesgos Identificados
-        </h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {[
-            { risk: "Costes inesperados de APIs", mitigation: "Límites de uso y monitorización" },
-            { risk: "Complejidad prematura", mitigation: "MVP mínimo, iterar después" },
-            { risk: "Fugas de datos sensibles", mitigation: "Encriptación + mínimo privilegio" },
-            { risk: "Dependencia de un solo proveedor", mitigation: "Diseño modular, multi-modelo" },
-          ].map((item, i) => (
-            <div key={i} className="bg-red-500/5 border border-red-500/10 rounded-lg p-4">
-              <p className="text-sm text-red-300 font-medium mb-1">{item.risk}</p>
-              <p className="text-xs text-gray-400">Mitigación: {item.mitigation}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
 }
-
-export default App;
