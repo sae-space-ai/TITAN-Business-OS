@@ -583,6 +583,128 @@ export interface AuthorizationRequest {
   createdAt: string;
 }
 
+// --- MOTOR DE EJECUCIÓN AUTÓNOMA ---
+
+export type TaskExecutionStatus = 
+  | 'requested'
+  | 'planned'
+  | 'validated'
+  | 'executing'
+  | 'awaiting_authorization'
+  | 'completed'
+  | 'verified'
+  | 'failed'
+  | 'cancelled';
+
+export interface AutonomousTask {
+  id: string;
+  companyId: string;
+  userId: string;
+  instruction: string;
+  interpretedIntent?: InterpretedIntent;
+  plan: TaskPlan;
+  status: TaskExecutionStatus;
+  currentStep: number;
+  results: TaskExecutionResult[];
+  authorizations: string[]; // IDs de AuthorizationRequest
+  startedAt: string;
+  completedAt?: string;
+  error?: string;
+  jouleMetrics: string[]; // IDs de métricas JOULE
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface InterpretedIntent {
+  objective: string;
+  entities: string[];
+  dates: string[];
+  constraints: string[];
+  requestedActions: string[];
+  missingInformation: string[];
+  confidence: number;
+  facts: string[];
+  inferences: string[];
+}
+
+export interface TaskPlan {
+  steps: ExecutionStep[];
+  estimatedDuration: number; // segundos
+  estimatedCost: number;
+  requiredPermissions: Permission[];
+  requiresAuthorization: boolean;
+}
+
+export interface ExecutionStep {
+  id: string;
+  order: number;
+  tool: string;
+  parameters: Record<string, any>;
+  dependencies: string[]; // IDs de otros pasos
+  requiredPermissions: Permission[];
+  requiresAuthorization: boolean;
+  successCondition: string;
+  errorPolicy: 'stop' | 'retry' | 'skip';
+  status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped' | 'awaiting_auth';
+  result?: any;
+  error?: string;
+  startedAt?: string;
+  completedAt?: string;
+  authorizationId?: string;
+}
+
+export interface TaskExecutionResult {
+  stepId: string;
+  tool: string;
+  success: boolean;
+  data?: any;
+  error?: string;
+  executedAt: string;
+  duration: number;
+  verified: boolean;
+}
+
+// --- HERRAMIENTAS DEL EMPLEADO DIGITAL ---
+
+export interface ToolDefinition {
+  name: string;
+  description: string;
+  parameters: Record<string, { type: string; required: boolean; description: string }>;
+  requiresAuthorization: boolean;
+  permissions: Permission[];
+}
+
+// --- RUTAS DE EJECUCIÓN JOULE ---
+
+export type ExecutionRoute = 'deterministic' | 'small_model' | 'advanced_model' | 'hybrid';
+
+export interface RouteDefinition {
+  id: ExecutionRoute;
+  name: string;
+  description: string;
+  provider: string;
+  model: string;
+  estimatedCost: number;
+  estimatedLatency: number;
+  qualityScore: number;
+  privacyLevel: 'high' | 'medium' | 'low';
+  enabled: boolean;
+}
+
+export interface RouteSelection {
+  taskId: string;
+  selectedRoute: ExecutionRoute;
+  reason: string;
+  alternatives: Array<{
+    route: ExecutionRoute;
+    cost: number;
+    latency: number;
+    quality: number;
+    reason: string;
+  }>;
+  selectedAt: string;
+}
+
 // --- ESTADO GLOBAL ---
 
 export interface AppState {
@@ -610,6 +732,7 @@ export interface AppState {
   invoices: Invoice[];
   emails: Email[];
   campaigns: Campaign[];
+  autonomousTasks: AutonomousTask[];
 }
 
 export const INITIAL_STATE: AppState = {
@@ -643,4 +766,5 @@ export const INITIAL_STATE: AppState = {
   invoices: [],
   emails: [],
   campaigns: [],
+  autonomousTasks: [],
 };

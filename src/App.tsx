@@ -14,8 +14,9 @@ import RequestDetail from './pages/RequestDetail';
 import BudgetEditor from './pages/BudgetEditor';
 import {
   Authorizations, Agenda, Reports, Joule, Billing, Documents,
-  Payments, MailModule, Marketing, DigitalEmployee, AlgorithmicIntelligence
+  Payments, MailModule, Marketing, AlgorithmicIntelligence
 } from './pages/Modules';
+import DigitalEmployee from './pages/DigitalEmployee';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const currentSession = useStore(s => s.currentSession);

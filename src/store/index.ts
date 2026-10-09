@@ -19,6 +19,7 @@ import {
   AIAnalysisResult,
   AIConfig,
   AuditLog,
+  AutonomousTask,
   Role,
   ROLE_PERMISSIONS,
   Permission,
@@ -86,6 +87,12 @@ interface TitanStore extends AppState {
   // JOULE Metrics
   addJouleMetric: (metric: Omit<JouleMetric, 'id' | 'createdAt'>) => void;
   getJouleMetricsByCompany: (companyId: string) => JouleMetric[];
+
+  // Autonomous Tasks
+  autonomousTasks: AutonomousTask[];
+  addAutonomousTask: (task: Omit<AutonomousTask, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  updateAutonomousTask: (id: string, data: Partial<AutonomousTask>) => void;
+  getAutonomousTasksByCompany: (companyId: string) => AutonomousTask[];
 
   // Audit
   addAuditLog: (log: Omit<AuditLog, 'id' | 'timestamp'>) => void;
@@ -448,6 +455,34 @@ export const useStore = create<TitanStore>()(
             c.id === id ? { ...c, status: 'archived' as const, updatedAt: new Date().toISOString() } : c
           ),
         }));
+      },
+
+      // --- AUTONOMOUS TASKS ---
+      autonomousTasks: [],
+      
+      addAutonomousTask: (taskData) => {
+        const now = new Date().toISOString();
+        const task: AutonomousTask = {
+          ...taskData,
+          id: uuidv4(),
+          createdAt: now,
+          updatedAt: now,
+        };
+        set(state => ({ autonomousTasks: [...state.autonomousTasks, task] }));
+      },
+
+      updateAutonomousTask: (id, data) => {
+        set(state => ({
+          autonomousTasks: state.autonomousTasks.map(t =>
+            t.id === id ? { ...t, ...data, updatedAt: new Date().toISOString() } : t
+          ),
+        }));
+      },
+
+      getAutonomousTasksByCompany: (companyId) => {
+        return get().autonomousTasks
+          .filter(t => t.companyId === companyId)
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       },
 
       // --- AUDIT ---
