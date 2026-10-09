@@ -15,6 +15,11 @@ const moduleNames: Record<string, string> = {
   '/autorizaciones': 'Autorizaciones',
 };
 
+const experimentalModules: Record<string, string> = {
+  '/empleado-digital': 'Disponible para análisis de solicitudes. Accede desde el detalle de una solicitud.',
+  '/documentos': 'Los documentos se generan desde presupuestos aprobados. Accede desde Presupuestos.',
+};
+
 export default function ComingSoon() {
   const location = useLocation();
   const moduleName = moduleNames[location.pathname] || 'Módulo';

@@ -9,8 +9,15 @@ import {
   Session,
   Client,
   Tariff,
+  Service,
   ServiceRequest,
   Budget,
+  BudgetLine,
+  ApprovalHistoryEntry,
+  GeneratedDocument,
+  JouleMetric,
+  AIAnalysisResult,
+  AIConfig,
   AuditLog,
   Role,
   ROLE_PERMISSIONS,
@@ -41,6 +48,7 @@ interface TitanStore extends AppState {
   addClient: (client: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateClient: (id: string, data: Partial<Client>) => void;
   deleteClient: (id: string) => void;
+  archiveClient: (id: string) => void;
   getClientsByCompany: (companyId: string) => Client[];
 
   // Tariffs
@@ -48,15 +56,36 @@ interface TitanStore extends AppState {
   updateTariff: (id: string, data: Partial<Tariff>) => void;
   getTariffsByCompany: (companyId: string) => Tariff[];
 
+  // Services
+  addService: (service: Omit<Service, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  updateService: (id: string, data: Partial<Service>) => void;
+  getServicesByCompany: (companyId: string) => Service[];
+
   // Requests
   addRequest: (request: Omit<ServiceRequest, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateRequest: (id: string, data: Partial<ServiceRequest>) => void;
+  updateRequestAnalysis: (requestId: string, analysis: AIAnalysisResult) => void;
   getRequestsByCompany: (companyId: string) => ServiceRequest[];
 
   // Budgets
   addBudget: (budget: Omit<Budget, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateBudget: (id: string, data: Partial<Budget>) => void;
   getBudgetsByCompany: (companyId: string) => Budget[];
+
+  // AI Config
+  updateAIConfig: (config: Partial<AIConfig>) => void;
+
+  // Approval History
+  addApprovalHistory: (entry: Omit<ApprovalHistoryEntry, 'id' | 'timestamp'>) => void;
+  getApprovalHistoryByBudget: (budgetId: string) => ApprovalHistoryEntry[];
+
+  // Generated Documents
+  addGeneratedDocument: (doc: Omit<GeneratedDocument, 'id' | 'createdAt'>) => void;
+  getDocumentsByBudget: (budgetId: string) => GeneratedDocument[];
+
+  // JOULE Metrics
+  addJouleMetric: (metric: Omit<JouleMetric, 'id' | 'createdAt'>) => void;
+  getJouleMetricsByCompany: (companyId: string) => JouleMetric[];
 
   // Audit
   addAuditLog: (log: Omit<AuditLog, 'id' | 'timestamp'>) => void;
@@ -324,6 +353,101 @@ export const useStore = create<TitanStore>()(
 
       getBudgetsByCompany: (companyId) => {
         return get().budgets.filter(b => b.companyId === companyId);
+      },
+
+      // --- SERVICES (Catálogo) ---
+      addService: (serviceData: Omit<Service, 'id' | 'createdAt' | 'updatedAt'>) => {
+        const now = new Date().toISOString();
+        const service: Service = {
+          ...serviceData,
+          id: uuidv4(),
+          createdAt: now,
+          updatedAt: now,
+        };
+        set(state => ({ services: [...state.services, service] }));
+      },
+
+      updateService: (id: string, data: Partial<Service>) => {
+        set(state => ({
+          services: state.services.map(s =>
+            s.id === id ? { ...s, ...data, updatedAt: new Date().toISOString() } : s
+          ),
+        }));
+      },
+
+      getServicesByCompany: (companyId: string) => {
+        return get().services.filter(s => s.companyId === companyId);
+      },
+
+      // --- AI CONFIG ---
+      updateAIConfig: (config: Partial<AIConfig>) => {
+        set(state => ({ aiConfig: { ...state.aiConfig, ...config } }));
+      },
+
+      // --- AI ANALYSIS ---
+      updateRequestAnalysis: (requestId: string, analysis: AIAnalysisResult) => {
+        set(state => ({
+          requests: state.requests.map(r =>
+            r.id === requestId
+              ? { ...r, aiAnalysis: analysis, status: 'analyzed', updatedAt: new Date().toISOString() }
+              : r
+          ),
+        }));
+      },
+
+      // --- APPROVAL HISTORY ---
+      addApprovalHistory: (entry: Omit<ApprovalHistoryEntry, 'id' | 'timestamp'>) => {
+        const historyEntry: ApprovalHistoryEntry = {
+          ...entry,
+          id: uuidv4(),
+          timestamp: new Date().toISOString(),
+        };
+        set(state => ({ approvalHistory: [...state.approvalHistory, historyEntry] }));
+      },
+
+      getApprovalHistoryByBudget: (budgetId: string) => {
+        return get().approvalHistory
+          .filter(h => h.budgetId === budgetId)
+          .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      },
+
+      // --- GENERATED DOCUMENTS ---
+      addGeneratedDocument: (doc: Omit<GeneratedDocument, 'id' | 'createdAt'>) => {
+        const document: GeneratedDocument = {
+          ...doc,
+          id: uuidv4(),
+          createdAt: new Date().toISOString(),
+        };
+        set(state => ({ generatedDocuments: [...state.generatedDocuments, document] }));
+      },
+
+      getDocumentsByBudget: (budgetId: string) => {
+        return get().generatedDocuments.filter(d => d.budgetId === budgetId);
+      },
+
+      // --- JOULE METRICS ---
+      addJouleMetric: (metric: Omit<JouleMetric, 'id' | 'createdAt'>) => {
+        const jouleMetric: JouleMetric = {
+          ...metric,
+          id: uuidv4(),
+          createdAt: new Date().toISOString(),
+        };
+        set(state => ({ jouleMetrics: [...state.jouleMetrics, jouleMetric] }));
+      },
+
+      getJouleMetricsByCompany: (companyId: string) => {
+        return get().jouleMetrics
+          .filter(m => m.companyId === companyId)
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      },
+
+      // --- CLIENT ARCHIVE ---
+      archiveClient: (id: string) => {
+        set(state => ({
+          clients: state.clients.map(c =>
+            c.id === id ? { ...c, status: 'archived' as const, updatedAt: new Date().toISOString() } : c
+          ),
+        }));
       },
 
       // --- AUDIT ---

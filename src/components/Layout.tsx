@@ -9,14 +9,14 @@ import { useState } from 'react';
 
 const modules = [
   { id: 'home', label: 'Home', icon: Home, path: '/home', status: 'active' },
-  { id: 'employee', label: 'Empleado digital', icon: Bot, path: '/empleado-digital', status: 'coming_soon' },
+  { id: 'employee', label: 'Empleado digital', icon: Bot, path: '/empleado-digital', status: 'experimental' },
   { id: 'intelligence', label: 'Inteligencia algorítmica', icon: Brain, path: '/inteligencia', status: 'coming_soon' },
   { id: 'joule', label: 'JOULE Optimization', icon: Zap, path: '/joule', status: 'coming_soon' },
   { id: 'clients', label: 'Clientes', icon: Users, path: '/clientes', status: 'active' },
   { id: 'requests', label: 'Solicitudes', icon: FileText, path: '/solicitudes', status: 'active' },
   { id: 'budgets', label: 'Presupuestos', icon: FileCheck, path: '/presupuestos', status: 'active' },
   { id: 'billing', label: 'Facturación', icon: Receipt, path: '/facturacion', status: 'coming_soon' },
-  { id: 'documents', label: 'Documentos', icon: FolderOpen, path: '/documentos', status: 'coming_soon' },
+  { id: 'documents', label: 'Documentos', icon: FolderOpen, path: '/documentos', status: 'experimental' },
   { id: 'reports', label: 'Informes', icon: BarChart3, path: '/informes', status: 'coming_soon' },
   { id: 'agenda', label: 'Agenda', icon: Calendar, path: '/agenda', status: 'coming_soon' },
   { id: 'payments', label: 'Cobros', icon: CreditCard, path: '/cobros', status: 'coming_soon' },

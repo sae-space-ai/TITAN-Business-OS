@@ -115,6 +115,8 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
 
 // --- CLIENTES ---
 
+export type ClientStatus = 'active' | 'archived';
+
 export interface Client {
   id: string;
   companyId: string;
@@ -125,8 +127,10 @@ export interface Client {
   address?: string;
   postalCode?: string;
   city?: string;
+  contactPerson?: string;
   notes?: string;
   tags: string[];
+  status: ClientStatus;
   isSynthetic: boolean; // Marcado si es dato de prueba
   createdAt: string;
   updatedAt: string;
@@ -162,24 +166,10 @@ export interface ServiceRequest {
   status: RequestStatus;
   assignedTo?: string; // userId
   attachments: string[];
-  aiAnalysis?: AIAnalysis;
+  aiAnalysis?: AIAnalysisResult;
   createdAt: string;
   updatedAt: string;
   createdBy: string;
-}
-
-export interface AIAnalysis {
-  identifiedService: string;
-  extractedData: Record<string, string>;
-  missingData: string[];
-  facts: string[];
-  inferences: string[];
-  proposedAction: string;
-  confidence: number;
-  model: string;
-  tokensUsed: number;
-  costEstimate: number;
-  analyzedAt: string;
 }
 
 // --- PRESUPUESTOS ---
@@ -199,7 +189,7 @@ export interface BudgetLine {
 export interface Budget {
   id: string;
   companyId: string;
-  requestId: string;
+  requestId?: string;
   clientId: string;
   number: string;
   version: number;
@@ -343,6 +333,124 @@ export interface OfficialSource {
   category: string;
 }
 
+// --- SERVICIOS (Catálogo mejorado) ---
+
+export interface Service {
+  id: string;
+  companyId: string;
+  name: string;
+  description: string;
+  defaultUnitPrice: number;
+  unit: string;
+  category: string;
+  defaultTaxRate: number; // Por defecto 21, pero puede variar
+  conditions?: string;
+  isActive: boolean;
+  validFrom?: string;
+  validUntil?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// --- HISTORIAL DE APROBACIONES ---
+
+export interface ApprovalHistoryEntry {
+  id: string;
+  companyId: string;
+  budgetId: string;
+  userId: string;
+  userName: string;
+  action: 'created' | 'modified' | 'submitted' | 'approved' | 'rejected' | 'requested_changes' | 'annulled' | 'versioned';
+  fromStatus?: BudgetStatus;
+  toStatus: BudgetStatus;
+  version: number;
+  notes?: string;
+  timestamp: string;
+}
+
+// --- ANÁLISIS IA ---
+
+export interface AIAnalysisResult {
+  identifiedService: string;
+  confidence: number;
+  extractedData: {
+    clientName?: string;
+    serviceDescription?: string;
+    estimatedQuantity?: number;
+    estimatedUnit?: string;
+    urgency?: string;
+    specialConditions?: string;
+  };
+  missingData: string[];
+  facts: string[];
+  inferences: string[];
+  contradictions: string[];
+  proposedConcepts: Array<{
+    description: string;
+    suggestedServiceId?: string;
+    suggestedQuantity?: number;
+    suggestedUnit?: string;
+  }>;
+  proposedAction: string;
+  model: string;
+  tokensUsed: number;
+  costEstimate: number;
+  latencyMs: number;
+  status: 'success' | 'error' | 'pending_integration' | 'schema_violation';
+  errorMessage?: string;
+  analyzedAt: string;
+}
+
+// --- CONFIGURACIÓN DE IA ---
+
+export interface AIConfig {
+  provider?: string;
+  model?: string;
+  apiKeyConfigured: boolean;
+  maxCallsPerDay: number;
+  maxTokensPerCall: number;
+  timeoutMs: number;
+  maxRetries: number;
+}
+
+// --- DOCUMENTOS GENERADOS ---
+
+export type GeneratedDocumentType = 'budget_pdf' | 'budget_xlsx';
+
+export interface GeneratedDocument {
+  id: string;
+  companyId: string;
+  budgetId: string;
+  type: GeneratedDocumentType;
+  name: string;
+  dataUrl: string; // Base64 data URL para descarga
+  fileSize: number;
+  version: number;
+  checksum: string; // Hash para verificar integridad
+  createdBy: string;
+  createdAt: string;
+}
+
+// --- MÉTRICAS JOULE ---
+
+export interface JouleMetric {
+  id: string;
+  companyId: string;
+  taskId?: string;
+  requestId?: string;
+  operation: string;
+  provider: string;
+  model: string;
+  tokensInput: number;
+  tokensOutput: number;
+  cost: number;
+  latencyMs: number;
+  retries: number;
+  status: 'success' | 'error' | 'timeout' | 'rate_limited';
+  qualityScore?: number;
+  createdAt: string;
+}
+
 // --- ESTADO GLOBAL ---
 
 export interface AppState {
@@ -351,14 +459,19 @@ export interface AppState {
   currentSession: Session | null;
   clients: Client[];
   tariffs: Tariff[];
+  services: Service[];
   requests: ServiceRequest[];
   budgets: Budget[];
+  approvalHistory: ApprovalHistoryEntry[];
   documents: Document[];
+  generatedDocuments: GeneratedDocument[];
   tasks: DigitalEmployeeTask[];
   authorizations: Authorization[];
   auditLogs: AuditLog[];
   aiMetrics: AIMetric[];
+  jouleMetrics: JouleMetric[];
   officialSources: OfficialSource[];
+  aiConfig: AIConfig;
 }
 
 export const INITIAL_STATE: AppState = {
@@ -367,12 +480,23 @@ export const INITIAL_STATE: AppState = {
   currentSession: null,
   clients: [],
   tariffs: [],
+  services: [],
   requests: [],
   budgets: [],
+  approvalHistory: [],
   documents: [],
+  generatedDocuments: [],
   tasks: [],
   authorizations: [],
   auditLogs: [],
   aiMetrics: [],
+  jouleMetrics: [],
   officialSources: [],
+  aiConfig: {
+    apiKeyConfigured: false,
+    maxCallsPerDay: 100,
+    maxTokensPerCall: 4000,
+    timeoutMs: 30000,
+    maxRetries: 2,
+  },
 };

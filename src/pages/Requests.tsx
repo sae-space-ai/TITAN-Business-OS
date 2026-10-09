@@ -269,6 +269,7 @@ export default function Requests() {
                   <button
                     onClick={() => navigate(`/solicitudes/${request.id}`)}
                     className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-[#288FC5] shrink-0"
+                    title="Ver detalle y analizar"
                   >
                     <Eye size={16} />
                   </button>

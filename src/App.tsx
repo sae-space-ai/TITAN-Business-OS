@@ -10,6 +10,8 @@ import SettingsPage from './pages/Settings';
 import Sources from './pages/Sources';
 import ComingSoon from './pages/ComingSoon';
 import Stage1Status from './pages/Stage1Status';
+import RequestDetail from './pages/RequestDetail';
+import BudgetEditor from './pages/BudgetEditor';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const currentSession = useStore(s => s.currentSession);
@@ -62,7 +64,10 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/clientes" element={<Clients />} />
           <Route path="/solicitudes" element={<Requests />} />
+          <Route path="/solicitudes/:id" element={<RequestDetail />} />
           <Route path="/presupuestos" element={<Budgets />} />
+          <Route path="/presupuestos/nueva" element={<BudgetEditor />} />
+          <Route path="/presupuestos/:id" element={<BudgetEditor />} />
           <Route path="/configuracion" element={<SettingsPage />} />
           <Route path="/fuentes" element={<Sources />} />
           <Route path="/estado-etapa-1" element={<Stage1Status />} />

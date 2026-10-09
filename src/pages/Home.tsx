@@ -9,14 +9,14 @@ import {
 import { useState } from 'react';
 
 const homeModules = [
-  { id: 'employee', label: 'Empleado digital', icon: Bot, path: '/empleado-digital', status: 'coming_soon', color: 'from-violet-500 to-purple-600' },
+  { id: 'employee', label: 'Empleado digital', icon: Bot, path: '/empleado-digital', status: 'experimental', color: 'from-violet-500 to-purple-600' },
   { id: 'intelligence', label: 'Inteligencia algorítmica', icon: Brain, path: '/inteligencia', status: 'coming_soon', color: 'from-blue-500 to-indigo-600' },
   { id: 'joule', label: 'JOULE Optimization', icon: Zap, path: '/joule', status: 'coming_soon', color: 'from-amber-500 to-orange-600' },
   { id: 'clients', label: 'Clientes', icon: Users, path: '/clientes', status: 'active', color: 'from-[#288FC5] to-[#1a6fa0]' },
   { id: 'requests', label: 'Solicitudes', icon: FileText, path: '/solicitudes', status: 'active', color: 'from-[#288FC5] to-[#1a6fa0]' },
   { id: 'budgets', label: 'Presupuestos', icon: FileCheck, path: '/presupuestos', status: 'active', color: 'from-[#288FC5] to-[#1a6fa0]' },
   { id: 'billing', label: 'Facturación', icon: Receipt, path: '/facturacion', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
-  { id: 'documents', label: 'Documentos', icon: FolderOpen, path: '/documentos', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
+  { id: 'documents', label: 'Documentos', icon: FolderOpen, path: '/documentos', status: 'experimental', color: 'from-violet-500 to-purple-600' },
   { id: 'reports', label: 'Informes', icon: BarChart3, path: '/informes', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
   { id: 'agenda', label: 'Agenda', icon: Calendar, path: '/agenda', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
   { id: 'payments', label: 'Cobros', icon: CreditCard, path: '/cobros', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },

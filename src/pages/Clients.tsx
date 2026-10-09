@@ -57,6 +57,7 @@ export default function Clients() {
         address,
         notes,
         tags: [],
+        status: 'active',
         isSynthetic: false,
       });
     }

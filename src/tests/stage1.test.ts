@@ -109,6 +109,7 @@ export async function runStage1Tests(): Promise<TestResult[]> {
         email: 'cliente@test.com',
         phone: '+34 699 999 999',
         tags: [],
+        status: 'active',
         isSynthetic: false,
       });
 
