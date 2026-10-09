@@ -20,6 +20,10 @@ import {
   AIConfig,
   AuditLog,
   AutonomousTask,
+  Email,
+  AuthorizationRequest,
+  Campaign,
+  Invoice,
   Role,
   ROLE_PERMISSIONS,
   Permission,
@@ -93,6 +97,21 @@ interface TitanStore extends AppState {
   addAutonomousTask: (task: Omit<AutonomousTask, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateAutonomousTask: (id: string, data: Partial<AutonomousTask>) => void;
   getAutonomousTasksByCompany: (companyId: string) => AutonomousTask[];
+
+  // Emails
+  addEmail: (email: Omit<Email, 'id' | 'createdAt'>) => void;
+  updateEmail: (id: string, data: Partial<Email>) => void;
+
+  // Authorization Requests
+  addAuthorizationRequest: (request: Omit<AuthorizationRequest, 'id' | 'createdAt'>) => void;
+  updateAuthorizationRequest: (id: string, data: Partial<AuthorizationRequest>) => void;
+
+  // Campaigns
+  addCampaign: (campaign: Omit<Campaign, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  updateCampaign: (id: string, data: Partial<Campaign>) => void;
+
+  // Invoices
+  addInvoice: (invoice: Omit<Invoice, 'id' | 'createdAt' | 'updatedAt'>) => void;
 
   // Audit
   addAuditLog: (log: Omit<AuditLog, 'id' | 'timestamp'>) => void;
@@ -483,6 +502,74 @@ export const useStore = create<TitanStore>()(
         return get().autonomousTasks
           .filter(t => t.companyId === companyId)
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      },
+
+      // --- EMAILS ---
+      addEmail: (emailData) => {
+        const email: Email = {
+          ...emailData,
+          id: uuidv4(),
+          createdAt: new Date().toISOString(),
+        };
+        set(state => ({ emails: [...state.emails, email] }));
+      },
+
+      updateEmail: (id, data) => {
+        set(state => ({
+          emails: state.emails.map(e =>
+            e.id === id ? { ...e, ...data } : e
+          ),
+        }));
+      },
+
+      // --- AUTHORIZATION REQUESTS ---
+      addAuthorizationRequest: (requestData) => {
+        const request: AuthorizationRequest = {
+          ...requestData,
+          id: uuidv4(),
+          createdAt: new Date().toISOString(),
+        };
+        set(state => ({ authorizationRequests: [...state.authorizationRequests, request] }));
+      },
+
+      updateAuthorizationRequest: (id, data) => {
+        set(state => ({
+          authorizationRequests: state.authorizationRequests.map(r =>
+            r.id === id ? { ...r, ...data } : r
+          ),
+        }));
+      },
+
+      // --- CAMPAIGNS ---
+      addCampaign: (campaignData) => {
+        const now = new Date().toISOString();
+        const campaign: Campaign = {
+          ...campaignData,
+          id: uuidv4(),
+          createdAt: now,
+          updatedAt: now,
+        };
+        set(state => ({ campaigns: [...state.campaigns, campaign] }));
+      },
+
+      updateCampaign: (id, data) => {
+        set(state => ({
+          campaigns: state.campaigns.map(c =>
+            c.id === id ? { ...c, ...data, updatedAt: new Date().toISOString() } : c
+          ),
+        }));
+      },
+
+      // --- INVOICES ---
+      addInvoice: (invoiceData) => {
+        const now = new Date().toISOString();
+        const invoice: Invoice = {
+          ...invoiceData,
+          id: uuidv4(),
+          createdAt: now,
+          updatedAt: now,
+        };
+        set(state => ({ invoices: [...state.invoices, invoice] }));
       },
 
       // --- AUDIT ---

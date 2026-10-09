@@ -13,10 +13,13 @@ import Stage1Status from './pages/Stage1Status';
 import RequestDetail from './pages/RequestDetail';
 import BudgetEditor from './pages/BudgetEditor';
 import {
-  Authorizations, Agenda, Reports, Joule, Billing, Documents,
-  Payments, MailModule, Marketing, AlgorithmicIntelligence
+  Authorizations, Agenda, Reports, Joule, Documents,
+  Payments, AlgorithmicIntelligence
 } from './pages/Modules';
 import DigitalEmployee from './pages/DigitalEmployee';
+import MailModule from './pages/MailModule';
+import Marketing from './pages/Marketing';
+import Billing from './pages/Billing';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const currentSession = useStore(s => s.currentSession);
