@@ -36,6 +36,46 @@ export const TOOL_REGISTRY = {
     requiresAuthorization: false,
     permissions: ['requests.read'] as Permission[],
   },
+  'analyze_request': {
+    name: 'analyze_request',
+    description: 'Analiza una solicitud con IA',
+    parameters: { requestId: { type: 'string', required: true, description: 'ID de la solicitud' } },
+    requiresAuthorization: false,
+    permissions: ['digital_employee.execute'] as Permission[],
+  },
+  'create_calendar_event': {
+    name: 'create_calendar_event',
+    description: 'Crea un evento en la agenda',
+    parameters: {
+      title: { type: 'string', required: true, description: 'Título del evento' },
+      startDate: { type: 'string', required: true, description: 'Fecha inicio' },
+      endDate: { type: 'string', required: true, description: 'Fecha fin' },
+      clientId: { type: 'string', required: false, description: 'ID del cliente' },
+    },
+    requiresAuthorization: true,
+    permissions: [] as Permission[],
+  },
+  'generate_document': {
+    name: 'generate_document',
+    description: 'Genera documento PDF/XLSX',
+    parameters: {
+      budgetId: { type: 'string', required: true, description: 'ID del presupuesto' },
+      format: { type: 'string', required: true, description: 'pdf o xlsx' },
+    },
+    requiresAuthorization: false,
+    permissions: ['documents.create'] as Permission[],
+  },
+  'prepare_email_draft': {
+    name: 'prepare_email_draft',
+    description: 'Prepara borrador de correo',
+    parameters: {
+      to: { type: 'string', required: true, description: 'Destinatario' },
+      subject: { type: 'string', required: true, description: 'Asunto' },
+      body: { type: 'string', required: true, description: 'Cuerpo del mensaje' },
+    },
+    requiresAuthorization: true,
+    permissions: [] as Permission[],
+  },
   'get_client': {
     name: 'get_client',
     description: 'Obtiene datos de un cliente',
