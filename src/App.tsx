@@ -12,6 +12,10 @@ import ComingSoon from './pages/ComingSoon';
 import Stage1Status from './pages/Stage1Status';
 import RequestDetail from './pages/RequestDetail';
 import BudgetEditor from './pages/BudgetEditor';
+import {
+  Authorizations, Agenda, Reports, Joule, Billing, Documents,
+  Payments, MailModule, Marketing, DigitalEmployee, AlgorithmicIntelligence
+} from './pages/Modules';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const currentSession = useStore(s => s.currentSession);
@@ -72,18 +76,18 @@ export default function App() {
           <Route path="/fuentes" element={<Sources />} />
           <Route path="/estado-etapa-1" element={<Stage1Status />} />
 
-          {/* Coming soon modules */}
-          <Route path="/empleado-digital" element={<ComingSoon />} />
-          <Route path="/inteligencia" element={<ComingSoon />} />
-          <Route path="/joule" element={<ComingSoon />} />
-          <Route path="/facturacion" element={<ComingSoon />} />
-          <Route path="/documentos" element={<ComingSoon />} />
-          <Route path="/informes" element={<ComingSoon />} />
-          <Route path="/agenda" element={<ComingSoon />} />
-          <Route path="/cobros" element={<ComingSoon />} />
-          <Route path="/correo" element={<ComingSoon />} />
-          <Route path="/marketing" element={<ComingSoon />} />
-          <Route path="/autorizaciones" element={<ComingSoon />} />
+          {/* Módulos operativos Etapa 3 */}
+          <Route path="/empleado-digital" element={<DigitalEmployee />} />
+          <Route path="/inteligencia" element={<AlgorithmicIntelligence />} />
+          <Route path="/joule" element={<Joule />} />
+          <Route path="/facturacion" element={<Billing />} />
+          <Route path="/documentos" element={<Documents />} />
+          <Route path="/informes" element={<Reports />} />
+          <Route path="/agenda" element={<Agenda />} />
+          <Route path="/cobros" element={<Payments />} />
+          <Route path="/correo" element={<MailModule />} />
+          <Route path="/marketing" element={<Marketing />} />
+          <Route path="/autorizaciones" element={<Authorizations />} />
         </Route>
 
         {/* Default redirect */}

@@ -10,20 +10,20 @@ import { useState } from 'react';
 
 const homeModules = [
   { id: 'employee', label: 'Empleado digital', icon: Bot, path: '/empleado-digital', status: 'experimental', color: 'from-violet-500 to-purple-600' },
-  { id: 'intelligence', label: 'Inteligencia algorítmica', icon: Brain, path: '/inteligencia', status: 'coming_soon', color: 'from-blue-500 to-indigo-600' },
-  { id: 'joule', label: 'JOULE Optimization', icon: Zap, path: '/joule', status: 'coming_soon', color: 'from-amber-500 to-orange-600' },
+  { id: 'intelligence', label: 'Inteligencia algorítmica', icon: Brain, path: '/inteligencia', status: 'experimental', color: 'from-blue-500 to-indigo-600' },
+  { id: 'joule', label: 'JOULE Optimization', icon: Zap, path: '/joule', status: 'active', color: 'from-amber-500 to-orange-600' },
   { id: 'clients', label: 'Clientes', icon: Users, path: '/clientes', status: 'active', color: 'from-[#288FC5] to-[#1a6fa0]' },
   { id: 'requests', label: 'Solicitudes', icon: FileText, path: '/solicitudes', status: 'active', color: 'from-[#288FC5] to-[#1a6fa0]' },
   { id: 'budgets', label: 'Presupuestos', icon: FileCheck, path: '/presupuestos', status: 'active', color: 'from-[#288FC5] to-[#1a6fa0]' },
-  { id: 'billing', label: 'Facturación', icon: Receipt, path: '/facturacion', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
-  { id: 'documents', label: 'Documentos', icon: FolderOpen, path: '/documentos', status: 'experimental', color: 'from-violet-500 to-purple-600' },
-  { id: 'reports', label: 'Informes', icon: BarChart3, path: '/informes', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
-  { id: 'agenda', label: 'Agenda', icon: Calendar, path: '/agenda', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
-  { id: 'payments', label: 'Cobros', icon: CreditCard, path: '/cobros', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
-  { id: 'mail', label: 'Correo', icon: Mail, path: '/correo', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
-  { id: 'marketing', label: 'Marketing', icon: Megaphone, path: '/marketing', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
+  { id: 'billing', label: 'Facturación', icon: Receipt, path: '/facturacion', status: 'pending_validation', color: 'from-gray-400 to-gray-500' },
+  { id: 'documents', label: 'Documentos', icon: FolderOpen, path: '/documentos', status: 'active', color: 'from-violet-500 to-purple-600' },
+  { id: 'reports', label: 'Informes', icon: BarChart3, path: '/informes', status: 'active', color: 'from-emerald-500 to-green-600' },
+  { id: 'agenda', label: 'Agenda', icon: Calendar, path: '/agenda', status: 'active', color: 'from-sky-500 to-blue-600' },
+  { id: 'payments', label: 'Cobros', icon: CreditCard, path: '/cobros', status: 'pending_validation', color: 'from-gray-400 to-gray-500' },
+  { id: 'mail', label: 'Correo', icon: Mail, path: '/correo', status: 'pending_integration', color: 'from-gray-400 to-gray-500' },
+  { id: 'marketing', label: 'Marketing', icon: Megaphone, path: '/marketing', status: 'pending_integration', color: 'from-gray-400 to-gray-500' },
   { id: 'sources', label: 'Fuentes oficiales', icon: Landmark, path: '/fuentes', status: 'experimental', color: 'from-[#D778A4] to-[#b85a85]' },
-  { id: 'auth', label: 'Autorizaciones', icon: Shield, path: '/autorizaciones', status: 'coming_soon', color: 'from-gray-400 to-gray-500' },
+  { id: 'auth', label: 'Autorizaciones', icon: Shield, path: '/autorizaciones', status: 'active', color: 'from-[#288FC5] to-[#1a6fa0]' },
   { id: 'settings', label: 'Configuración', icon: Settings, path: '/configuracion', status: 'active', color: 'from-gray-600 to-gray-700' },
 ];
 
@@ -194,19 +194,19 @@ export default function Home() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {homeModules.map((mod) => {
             const Icon = mod.icon;
-            const isComingSoon = mod.status === 'coming_soon';
+            const isPending = mod.status === 'coming_soon' || mod.status === 'pending_validation' || mod.status === 'pending_integration';
             const isExperimental = mod.status === 'experimental';
 
             return (
               <button
                 key={mod.id}
                 onClick={() => {
-                  if (!isComingSoon) navigate(mod.path);
+                  if (!isPending) navigate(mod.path);
                 }}
-                disabled={isComingSoon}
+                disabled={isPending && mod.status === 'coming_soon'}
                 className={`
                   relative group p-4 rounded-xl border text-left transition-all
-                  ${isComingSoon
+                  ${isPending && mod.status === 'coming_soon'
                     ? 'bg-gray-50 border-gray-100 cursor-not-allowed opacity-60'
                     : isExperimental
                       ? 'bg-white border-[#F8D7E7] hover:border-[#D778A4] hover:shadow-md'
@@ -218,14 +218,24 @@ export default function Home() {
                   <Icon size={20} className="text-white" />
                 </div>
                 <p className="text-sm font-medium text-[#334155]">{mod.label}</p>
-                {isComingSoon && (
+                {mod.status === 'coming_soon' && (
                   <span className="absolute top-2 right-2 text-[9px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-400 font-medium">
                     Próximamente
                   </span>
                 )}
-                {isExperimental && (
+                {mod.status === 'experimental' && (
                   <span className="absolute top-2 right-2 text-[9px] px-1.5 py-0.5 rounded bg-[#F8D7E7] text-[#D778A4] font-medium">
                     Experimental
+                  </span>
+                )}
+                {mod.status === 'pending_validation' && (
+                  <span className="absolute top-2 right-2 text-[9px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 font-medium">
+                    Validación legal
+                  </span>
+                )}
+                {mod.status === 'pending_integration' && (
+                  <span className="absolute top-2 right-2 text-[9px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 font-medium">
+                    Requiere integración
                   </span>
                 )}
               </button>

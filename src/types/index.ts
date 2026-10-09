@@ -451,6 +451,138 @@ export interface JouleMetric {
   createdAt: string;
 }
 
+// --- AGENDA ---
+
+export type EventStatus = 'scheduled' | 'confirmed' | 'cancelled' | 'completed';
+
+export interface CalendarEvent {
+  id: string;
+  companyId: string;
+  title: string;
+  description?: string;
+  clientId?: string;
+  requestId?: string;
+  startDate: string;
+  endDate: string;
+  location?: string;
+  status: EventStatus;
+  reminder?: number; // minutos antes
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// --- COBROS ---
+
+export type PaymentStatus = 'pending' | 'partial' | 'paid' | 'overdue' | 'cancelled';
+
+export interface Payment {
+  id: string;
+  companyId: string;
+  budgetId?: string;
+  invoiceId?: string;
+  clientId: string;
+  amount: number;
+  paidAmount: number;
+  dueDate: string;
+  status: PaymentStatus;
+  paymentDate?: string;
+  paymentMethod?: string;
+  notes?: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// --- FACTURAS ---
+
+export type InvoiceStatus = 'draft' | 'issued' | 'sent' | 'paid' | 'overdue' | 'cancelled' | 'rectificative';
+
+export interface Invoice {
+  id: string;
+  companyId: string;
+  number: string;
+  series: string;
+  clientId: string;
+  budgetId?: string;
+  issueDate: string;
+  dueDate: string;
+  lines: BudgetLine[];
+  subtotal: number;
+  taxRate: number;
+  taxAmount: number;
+  total: number;
+  status: InvoiceStatus;
+  notes?: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// --- CORREO ---
+
+export type EmailStatus = 'draft' | 'sent' | 'received' | 'failed';
+
+export interface Email {
+  id: string;
+  companyId: string;
+  from: string;
+  to: string;
+  subject: string;
+  body: string;
+  status: EmailStatus;
+  clientId?: string;
+  requestId?: string;
+  sentAt?: string;
+  receivedAt?: string;
+  createdBy: string;
+  createdAt: string;
+}
+
+// --- MARKETING ---
+
+export type CampaignStatus = 'draft' | 'scheduled' | 'active' | 'completed' | 'cancelled';
+
+export interface Campaign {
+  id: string;
+  companyId: string;
+  name: string;
+  description?: string;
+  type: 'email' | 'social' | 'promotion';
+  status: CampaignStatus;
+  startDate: string;
+  endDate?: string;
+  targetClients: string[];
+  message?: string;
+  results?: {
+    sent: number;
+    opened: number;
+    responded: number;
+  };
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// --- AUTORIZACIONES (mejorado) ---
+
+export interface AuthorizationRequest {
+  id: string;
+  companyId: string;
+  type: 'budget_approval' | 'invoice_emission' | 'email_send' | 'payment' | 'automation' | 'other';
+  title: string;
+  description: string;
+  requestData: Record<string, any>;
+  status: 'pending' | 'approved' | 'rejected' | 'expired';
+  requestedBy: string;
+  requestedByName: string;
+  approvedBy?: string;
+  approvedAt?: string;
+  rejectionReason?: string;
+  expiresAt: string;
+  createdAt: string;
+}
+
 // --- ESTADO GLOBAL ---
 
 export interface AppState {
@@ -467,11 +599,17 @@ export interface AppState {
   generatedDocuments: GeneratedDocument[];
   tasks: DigitalEmployeeTask[];
   authorizations: Authorization[];
+  authorizationRequests: AuthorizationRequest[];
   auditLogs: AuditLog[];
   aiMetrics: AIMetric[];
   jouleMetrics: JouleMetric[];
   officialSources: OfficialSource[];
   aiConfig: AIConfig;
+  events: CalendarEvent[];
+  payments: Payment[];
+  invoices: Invoice[];
+  emails: Email[];
+  campaigns: Campaign[];
 }
 
 export const INITIAL_STATE: AppState = {
@@ -488,6 +626,7 @@ export const INITIAL_STATE: AppState = {
   generatedDocuments: [],
   tasks: [],
   authorizations: [],
+  authorizationRequests: [],
   auditLogs: [],
   aiMetrics: [],
   jouleMetrics: [],
@@ -499,4 +638,9 @@ export const INITIAL_STATE: AppState = {
     timeoutMs: 30000,
     maxRetries: 2,
   },
+  events: [],
+  payments: [],
+  invoices: [],
+  emails: [],
+  campaigns: [],
 };

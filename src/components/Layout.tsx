@@ -10,20 +10,20 @@ import { useState } from 'react';
 const modules = [
   { id: 'home', label: 'Home', icon: Home, path: '/home', status: 'active' },
   { id: 'employee', label: 'Empleado digital', icon: Bot, path: '/empleado-digital', status: 'experimental' },
-  { id: 'intelligence', label: 'Inteligencia algorítmica', icon: Brain, path: '/inteligencia', status: 'coming_soon' },
-  { id: 'joule', label: 'JOULE Optimization', icon: Zap, path: '/joule', status: 'coming_soon' },
+  { id: 'intelligence', label: 'Inteligencia algorítmica', icon: Brain, path: '/inteligencia', status: 'experimental' },
+  { id: 'joule', label: 'JOULE Optimization', icon: Zap, path: '/joule', status: 'active' },
   { id: 'clients', label: 'Clientes', icon: Users, path: '/clientes', status: 'active' },
   { id: 'requests', label: 'Solicitudes', icon: FileText, path: '/solicitudes', status: 'active' },
   { id: 'budgets', label: 'Presupuestos', icon: FileCheck, path: '/presupuestos', status: 'active' },
-  { id: 'billing', label: 'Facturación', icon: Receipt, path: '/facturacion', status: 'coming_soon' },
-  { id: 'documents', label: 'Documentos', icon: FolderOpen, path: '/documentos', status: 'experimental' },
-  { id: 'reports', label: 'Informes', icon: BarChart3, path: '/informes', status: 'coming_soon' },
-  { id: 'agenda', label: 'Agenda', icon: Calendar, path: '/agenda', status: 'coming_soon' },
-  { id: 'payments', label: 'Cobros', icon: CreditCard, path: '/cobros', status: 'coming_soon' },
-  { id: 'mail', label: 'Correo', icon: Mail, path: '/correo', status: 'coming_soon' },
-  { id: 'marketing', label: 'Marketing', icon: Megaphone, path: '/marketing', status: 'coming_soon' },
+  { id: 'billing', label: 'Facturación', icon: Receipt, path: '/facturacion', status: 'pending' },
+  { id: 'documents', label: 'Documentos', icon: FolderOpen, path: '/documentos', status: 'active' },
+  { id: 'reports', label: 'Informes', icon: BarChart3, path: '/informes', status: 'active' },
+  { id: 'agenda', label: 'Agenda', icon: Calendar, path: '/agenda', status: 'active' },
+  { id: 'payments', label: 'Cobros', icon: CreditCard, path: '/cobros', status: 'pending' },
+  { id: 'mail', label: 'Correo', icon: Mail, path: '/correo', status: 'pending' },
+  { id: 'marketing', label: 'Marketing', icon: Megaphone, path: '/marketing', status: 'pending' },
   { id: 'sources', label: 'Fuentes oficiales', icon: Landmark, path: '/fuentes', status: 'experimental' },
-  { id: 'auth', label: 'Autorizaciones', icon: Shield, path: '/autorizaciones', status: 'coming_soon' },
+  { id: 'auth', label: 'Autorizaciones', icon: Shield, path: '/autorizaciones', status: 'active' },
   { id: 'settings', label: 'Configuración', icon: Settings, path: '/configuracion', status: 'active' },
 ];
 
@@ -77,24 +77,24 @@ export default function Layout() {
               {modules.map((mod) => {
                 const Icon = mod.icon;
                 const isActive = location.pathname === mod.path;
-                const isComingSoon = mod.status === 'coming_soon';
+                const isPending = mod.status === 'pending' || mod.status === 'coming_soon';
                 const isExperimental = mod.status === 'experimental';
 
                 return (
                   <button
                     key={mod.id}
                     onClick={() => {
-                      if (!isComingSoon) {
+                      if (!isPending) {
                         navigate(mod.path);
                         setSidebarOpen(false);
                       }
                     }}
-                    disabled={isComingSoon}
+                    disabled={isPending}
                     className={`
                       w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-all
                       ${isActive
                         ? 'bg-[#EAF7FE] text-[#288FC5]'
-                        : isComingSoon
+                        : isPending
                           ? 'text-gray-300 cursor-not-allowed'
                           : isExperimental
                             ? 'text-[#D778A4] hover:bg-[#F8D7E7]/30'
@@ -104,9 +104,9 @@ export default function Layout() {
                   >
                     <Icon size={18} className="shrink-0" />
                     <span className="text-sm font-medium truncate flex-1">{mod.label}</span>
-                    {isComingSoon && (
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-400 font-medium">
-                        Próximamente
+                    {mod.status === 'pending' && (
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 font-medium">
+                        Pendiente
                       </span>
                     )}
                     {isExperimental && (
