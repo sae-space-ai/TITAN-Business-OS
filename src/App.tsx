@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { useStore } from './store';
 import Layout from './components/Layout';
 import Login from './pages/Login';
@@ -98,6 +99,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
+      <SpeedInsights />
     </BrowserRouter>
   );
 }
